@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
+import { getTitle } from '../../utils/utils';
+
 const Card = ({ imageUrl, tags }) => {
-  const title =
-    tags.split(', ')[1].charAt(0).toUpperCase() + tags.split(', ')[1].slice(1);
   return (
     <div className='relative w-full h-32'>
       <img
@@ -11,7 +11,7 @@ const Card = ({ imageUrl, tags }) => {
         alt={tags}
       />
       <div className='absolute z-10 bg-black bottom-0 opacity-75 w-full h-8 text-center '>
-        <div className='text-white text-sm leading-8'>{title}</div>
+        <div className='text-white text-sm leading-8'>{getTitle(tags)}</div>
       </div>
     </div>
   );
