@@ -27,25 +27,17 @@ const Timer = () => {
       <div className='flex flex-col gap-2'>
         {isActive ? (
           <>
-            <Button
-              icon={<FontAwesomeIcon icon={faPause} />}
-              name={'Pause'}
-              colorClass={'bg-blue-500'}
-              onClick={pauseTimer}
-            />
-            <Button
-              name={'Reset'}
-              colorClass={'bg-orange-500'}
-              onClick={resetTimer}
-            />
+            <Button colorClass={'bg-blue-500'} onClick={pauseTimer}>
+              <FontAwesomeIcon icon={faPause} /> Pause
+            </Button>
+            <Button colorClass={'bg-orange-500'} onClick={resetTimer}>
+              Reset
+            </Button>
           </>
         ) : (
-          <Button
-            icon={<FontAwesomeIcon icon={faPlay} />}
-            name={'Play'}
-            colorClass={'bg-green-600'}
-            onClick={startTimer}
-          />
+          <Button colorClass={'bg-green-600'} onClick={startTimer}>
+            <FontAwesomeIcon icon={faPlay} /> Play
+          </Button>
         )}
       </div>
     </div>
