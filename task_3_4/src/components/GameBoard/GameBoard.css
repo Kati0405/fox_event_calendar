@@ -1,0 +1,51 @@
+.board {
+  height: 18.75rem;
+  width: 18.75rem;
+  background-color: rgba(69, 69, 69, 1);
+  padding: 0.9375em;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5.625rem;
+  width: 5.625rem;
+  border: 1px solid rgba(125, 125, 125, 1);
+}
+
+.row1 .box:nth-child(1) {
+  border-top: none;
+  border-left: none;
+}
+
+.row1 .box:nth-child(2) {
+  border-top: none;
+}
+
+.row1 .box:nth-child(3) {
+  border-top: none;
+  border-right: none;
+}
+
+.row2 .box:nth-child(1) {
+  border-left: none;
+}
+
+.row2 .box:nth-child(3) {
+  border-right: none;
+}
+
+.row3 .box:nth-child(1) {
+  border-bottom: none;
+  border-left: none;
+}
+
+.row3 .box:nth-child(2) {
+  border-bottom: none;
+}
+
+.row3 .box:nth-child(3) {
+  border-bottom: none;
+  border-right: none;
+}

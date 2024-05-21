@@ -1,0 +1,26 @@
+.chat-container {
+  background-color: rgba(49, 49, 49, 1);
+  height: 300px;
+  width: 40vw;
+  border: 1px solid rgba(69, 69, 69, 1);
+}
+
+.chat-header {
+  background-color: rgba(34, 34, 34, 1);
+  width: 100%;
+  height: 5rem;
+  border: 1px solid rgba(69, 69, 69, 1);
+}
+
+.chat-header_icon {
+  background-color: rgba(69, 69, 69, 1);
+}
+
+.input-filed {
+  background-color: rgba(66, 66, 66, 1);
+  border: 1px solid rgba(139, 139, 139, 1);
+}
+
+.input-filed:focus::placeholder {
+  color: transparent;
+}
