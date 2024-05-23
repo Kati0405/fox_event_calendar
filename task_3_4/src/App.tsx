@@ -1,4 +1,18 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  resetGame,
+  makeMove,
+  updateScore,
+  setLock,
+} from './redux/slices/gameSlice';
+import {
+  addMessage,
+  setInputValue1,
+  setInputValue2,
+} from './redux/slices/chatSlice';
+import { RootState, AppDispatch } from './redux/store';
+
 import './App.css';
 
 import GameBoard from './components/GameBoard/GameBoard';
@@ -6,20 +20,18 @@ import ScorePanel from './components/ScorePanel/ScorePanel';
 import Chat from './components/Chat/Chat';
 
 function App() {
-  const [score, setScore] = useState([0, 0]);
-  const [data, setData] = useState(['', '', '', '', '', '', '', '', '']);
-  const [movesCount, setMovesCount] = useState(0);
-  const [lock, setLock] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { score, data, movesCount, lock } = useSelector(
+    (state: RootState) => state.game
+  );
+
+  const { messages, inputValue1, inputValue2 } = useSelector(
+    (state: RootState) => state.chat
+  );
 
   const titleRef1 = useRef<HTMLDivElement>(null);
   const titleRef2 = useRef<HTMLDivElement>(null);
-
-  const [messages, setMessages] = useState<
-    { player: 'x' | 'o'; text: string }[]
-  >([]);
-
-  const [inputValue1, setInputValue1] = useState<string>('');
-  const [inputValue2, setInputValue2] = useState<string>('');
 
   useEffect(() => {
     if (titleRef1.current && titleRef2.current) {
@@ -28,25 +40,22 @@ function App() {
     }
   }, []);
 
-  const resetGame = () => {
-    setData(['', '', '', '', '', '', '', '', '']);
-    setMovesCount(0);
-    setLock(false);
+  const handleResetGame = () => {
+    dispatch(resetGame());
     if (titleRef1.current && titleRef2.current) {
       titleRef1.current.innerHTML = 'Game started! Your turn:';
       titleRef2.current.innerHTML = 'Game started! Wait for your opponent:';
     }
   };
 
-  const makeMove = (num: number) => {
+  const handleMakeMove = (num: number) => {
     if (lock || data[num]) {
       return;
     }
-
+    const player = movesCount % 2 === 0 ? 'x' : 'o';
     const newData = [...data];
-    newData[num] = movesCount % 2 === 0 ? 'x' : 'o';
-    setData(newData);
-    setMovesCount(movesCount + 1);
+    newData[num] = player;
+    dispatch(makeMove({ num, player }));
 
     const winner = checkWin(newData);
 
@@ -66,17 +75,15 @@ function App() {
             titleRef2.current.innerHTML = `<span class="text-green-500">You won!</span>`;
           }
         }
-        setScore((prevScore) => {
-          if (winner === 'x') {
-            return [prevScore[0] + 1, prevScore[1]];
-          } else {
-            return [prevScore[0], prevScore[1] + 1];
-          }
-        });
+        dispatch(
+          updateScore(
+            winner === 'x' ? [score[0] + 1, score[1]] : [score[0], score[1] + 1]
+          )
+        );
       }
 
-      setLock(true);
-      setTimeout(resetGame, 5000);
+      dispatch(setLock(true));
+      setTimeout(handleResetGame, 5000);
     } else {
       if (titleRef1.current && titleRef2.current) {
         if (movesCount % 2 === 0) {
@@ -121,36 +128,39 @@ function App() {
     player: 'x' | 'o'
   ) => {
     e.preventDefault();
+    const getCurrentTime = () => {
+      const now = new Date();
+      return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+    const newMessage = {
+      player,
+      text: player === 'x' ? inputValue1 : inputValue2,
+      time: getCurrentTime(),
+    };
     if (player === 'x' && inputValue1.trim() !== '') {
-      setMessages([...messages.slice(-3), { player: 'x', text: inputValue1 }]);
-      setInputValue1('');
+      dispatch(addMessage(newMessage));
+      dispatch(setInputValue1(''));
     } else if (player === 'o' && inputValue2.trim() !== '') {
-      setMessages([...messages.slice(-3), { player: 'o', text: inputValue2 }]);
-      setInputValue2('');
+      dispatch(addMessage(newMessage));
+      dispatch(setInputValue2(''));
     }
   };
 
   return (
-    <div className='bg-black h-screen w-screen'>
-      <ScorePanel
-        score={score}
-        setScore={setScore}
-        resetGame={resetGame}
-        setMessages={setMessages}
-      />
-      <div className='flex justify-center pt-9'>
+    <div className='bg-black h-100% w-screen'>
+      <ScorePanel score={score} resetGame={handleResetGame} />
+      <div className='flex justify-center    pt-9'>
         <div className='flex flex-col items-center border-r border-gray-300 pr-4'>
           <GameBoard
             titleRef={titleRef1}
             data={data}
             movesCount={movesCount}
             lock={movesCount % 2 !== 0}
-            makeMove={makeMove}
+            makeMove={handleMakeMove}
           />
           <Chat
             messages={messages}
             inputValue={inputValue1}
-            setInputValue={setInputValue1}
             handleChatSubmit={(e) => handleChatSubmit(e, 'x')}
             player='x'
           />
@@ -161,12 +171,11 @@ function App() {
             data={data}
             movesCount={movesCount}
             lock={movesCount % 2 === 0}
-            makeMove={makeMove}
+            makeMove={handleMakeMove}
           />
           <Chat
             messages={messages}
             inputValue={inputValue2}
-            setInputValue={setInputValue2}
             handleChatSubmit={(e) => handleChatSubmit(e, 'o')}
             player='o'
           />

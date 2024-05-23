@@ -1,23 +1,19 @@
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { clearMessages } from '../../redux/slices/chatSlice';
+
 import './ScorePanel.css';
 
 interface ScorePanelProps {
   score: number[];
-  setScore: React.Dispatch<React.SetStateAction<number[]>>;
   resetGame: () => void;
-  setMessages: React.Dispatch<
-    React.SetStateAction<{ player: 'x' | 'o'; text: string }[]>
-  >;
 }
 
-const ScorePanel: React.FC<ScorePanelProps> = ({
-  score,
-  setScore,
-  resetGame,
-  setMessages,
-}) => {
+const ScorePanel: React.FC<ScorePanelProps> = ({ score, resetGame }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const resetScore = () => {
-    setScore([0, 0]);
-    setMessages([]);
+    dispatch(clearMessages());
     resetGame();
   };
   return (
