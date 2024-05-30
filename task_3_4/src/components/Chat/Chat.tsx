@@ -1,11 +1,11 @@
 import './Chat.css';
 
-import cross from '../../assets/cross.svg';
-import circle from '../../assets/circle.svg';
-import send_icon from '../../assets/send-icon.svg';
+import cross from 'src/assets/cross.svg';
+import circle from 'src/assets/circle.svg';
+import send_icon from 'src/assets/send-icon.svg';
 
 import { useDispatch } from 'react-redux';
-import { setInputValue1, setInputValue2 } from '../../redux/slices/chatSlice';
+import { setInputValue1, setInputValue2 } from 'src/redux/slices/chatSlice';
 
 interface ChatProps {
   messages: { player: 'x' | 'o'; text: string; time: string }[];
@@ -30,9 +30,9 @@ const Chat: React.FC<ChatProps> = ({
     }
   };
   return (
-    <div className='chat-container rounded-t-lg relative mt-9 flex flex-col'>
-      <div className='chat-header rounded-t-lg'>
-        <div className='chat-header_icon absolute w-8 h-8 rounded-full left-2 top-2'>
+    <div className='chat-container bg-middle-gray border-silver-gray rounded-t-lg relative mt-9 flex flex-col'>
+      <div className='chat-header border-silver-gray border-thin border-solid bg-dark-gray rounded-t-lg'>
+        <div className='chat-header_icon border-silver-gray border-thin border-solid absolute w-8 h-8 rounded-full left-2 top-2'>
           <img
             className='size-6 w-4 h-4 absolute top-2 left-2'
             src={player === 'x' ? cross : circle}
@@ -72,7 +72,7 @@ const Chat: React.FC<ChatProps> = ({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder='Message'
-          className='input-filed h-14 rounded-xl w-full pl-3 text-white'
+          className='input-filed bg-light-gray border-silver-gray h-14 rounded-xl w-full pl-3 text-white'
         />
         <button
           type='submit'

@@ -1,7 +1,6 @@
 .board {
   height: 18.75rem;
   width: 18.75rem;
-  background-color: rgba(69, 69, 69, 1);
   padding: 0.9375em;
 }
 
@@ -11,7 +10,6 @@
   align-items: center;
   height: 5.625rem;
   width: 5.625rem;
-  border: 1px solid rgba(125, 125, 125, 1);
 }
 
 .row1 .box:nth-child(1) {

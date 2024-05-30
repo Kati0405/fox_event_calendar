@@ -5,7 +5,10 @@ import { clearMessages } from '../../redux/slices/chatSlice';
 import './ScorePanel.css';
 
 interface ScorePanelProps {
-  score: number[];
+  score: {
+    firstPlayer: number;
+    secondPlayer: number;
+  };
   resetGame: () => void;
 }
 
@@ -21,7 +24,7 @@ const ScorePanel: React.FC<ScorePanelProps> = ({ score, resetGame }) => {
       <div className='header-text_small text-white pl-48'>Player 1</div>
       <div className='text-white text-4xl'>
         <div className='flex gap-7 header-text_large cursor-pointer'>
-          {`Score: ${score[0]} : ${score[1]}`}
+          {`Score: ${score.firstPlayer} : ${score.secondPlayer}`}
           <button
             className='bg-green-500 rounded-lg px-3 py-2 text-sm'
             onClick={resetScore}

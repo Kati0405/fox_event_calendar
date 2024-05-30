@@ -1,16 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface GameState {
-    score: [number, number];
-    data: string[];
+    score: {
+        firstPlayer: number;
+        secondPlayer: number;
+    };
+    tableCells: string[];
     movesCount: number;
     lock: boolean;
 
 }
 
 const initialState: GameState = {
-    score: [0, 0],
-    data: ['', '', '', '', '', '', '', '', ''],
+    score: {
+        firstPlayer: 0,
+        secondPlayer: 0
+    },
+    tableCells: ['', '', '', '', '', '', '', '', ''],
     movesCount: 0,
     lock: false,
 
@@ -21,21 +27,23 @@ const gameSlice = createSlice({
     initialState,
     reducers: {
         resetGame: (state) => {
-            state.data = ['', '', '', '', '', '', '', '', ''];
+            state.tableCells = ['', '', '', '', '', '', '', '', ''];
             state.movesCount = 0;
             state.lock = false;
         },
         makeMove: (state, action) => {
             const { num, player } = action.payload;
-            if (state.lock || state.data[num]) return;
-            state.data[num] = player
+            if (state.lock || state.tableCells[num]) return;
+            state.tableCells[num] = player
             state.movesCount += 1
         },
         setLock: (state, action) => {
             state.lock = action.payload
         },
         updateScore: (state, action) => {
-            state.score = action.payload
+            const { firstPlayer, secondPlayer } = action.payload;
+            state.score.firstPlayer = firstPlayer;
+            state.score.secondPlayer = secondPlayer;
         }
     }
 })

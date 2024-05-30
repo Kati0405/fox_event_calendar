@@ -22,7 +22,7 @@ import Chat from './components/Chat/Chat';
 function App() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { score, data, movesCount, lock } = useSelector(
+  const { score, tableCells, movesCount, lock } = useSelector(
     (state: RootState) => state.game
   );
 
@@ -49,15 +49,15 @@ function App() {
   };
 
   const handleMakeMove = (num: number) => {
-    if (lock || data[num]) {
+    if (lock || tableCells[num]) {
       return;
     }
     const player = movesCount % 2 === 0 ? 'x' : 'o';
-    const newData = [...data];
-    newData[num] = player;
+    const newTableCells = [...tableCells];
+    newTableCells[num] = player;
     dispatch(makeMove({ num, player }));
 
-    const winner = checkWin(newData);
+    const winner = checkWin(newTableCells);
 
     if (winner) {
       if (winner === 'draw') {
@@ -76,9 +76,12 @@ function App() {
           }
         }
         dispatch(
-          updateScore(
-            winner === 'x' ? [score[0] + 1, score[1]] : [score[0], score[1] + 1]
-          )
+          updateScore({
+            firstPlayer:
+              winner === 'x' ? score.firstPlayer + 1 : score.firstPlayer,
+            secondPlayer:
+              winner === 'o' ? score.secondPlayer + 1 : score.secondPlayer,
+          })
         );
       }
 
@@ -97,7 +100,7 @@ function App() {
     }
   };
 
-  const checkWin = (data: string[]): string | null => {
+  const checkWin = (tableCells: string[]): string | null => {
     const winningConditions = [
       [0, 1, 2],
       [3, 4, 5],
@@ -111,8 +114,12 @@ function App() {
 
     for (const condition of winningConditions) {
       const [a, b, c] = condition;
-      if (data[a] && data[a] === data[b] && data[a] === data[c]) {
-        return data[a];
+      if (
+        tableCells[a] &&
+        tableCells[a] === tableCells[b] &&
+        tableCells[a] === tableCells[c]
+      ) {
+        return tableCells[a];
       }
     }
 
@@ -149,11 +156,11 @@ function App() {
   return (
     <div className='bg-black h-100% w-screen'>
       <ScorePanel score={score} resetGame={handleResetGame} />
-      <div className='flex justify-center    pt-9'>
+      <div className='flex justify-center pt-9'>
         <div className='flex flex-col items-center border-r border-gray-300 pr-4'>
           <GameBoard
             titleRef={titleRef1}
-            data={data}
+            tableCells={tableCells}
             movesCount={movesCount}
             lock={movesCount % 2 !== 0}
             makeMove={handleMakeMove}
@@ -168,7 +175,7 @@ function App() {
         <div className='flex flex-col items-center pl-4'>
           <GameBoard
             titleRef={titleRef2}
-            data={data}
+            tableCells={tableCells}
             movesCount={movesCount}
             lock={movesCount % 2 === 0}
             makeMove={handleMakeMove}
