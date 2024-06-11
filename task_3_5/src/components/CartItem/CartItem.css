@@ -1,0 +1,32 @@
+.cart-item {
+  width: 60rem;
+  height: 9.125rem;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: repeat(1fr);
+  gap: 0.5rem;
+  grid-template-areas:
+    'img title btn'
+    'img count price';
+}
+
+.cart-item_img {
+  grid-area: img;
+}
+
+.cart-item_title {
+  grid-area: title;
+}
+
+.cart-item_price {
+  grid-area: price;
+}
+
+.cart-item_counter {
+  grid-area: count;
+}
+
+.cart-item_img {
+  height: 8.125rem;
+  width: 8.125rem;
+}
