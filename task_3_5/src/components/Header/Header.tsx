@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { RootState } from 'src/redux/store';
 
 import Button from '../Button/Button';
 import logo from 'src/assets/logo.svg';
 import cart_icon from 'src/assets/cart-icon.svg';
 
 import './Header.css';
+import { selectCartQuantity } from 'src/redux/selectors/cartSelector';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Header = () => {
     navigate('/cart');
   };
 
-  const { quantity } = useSelector((state: RootState) => state.cart);
+  const quantity = useSelector(selectCartQuantity);
   return (
     <header className='header h-20 bg-neutral-900 w-full flex flex-row justify-between items-center shadow-xl'>
       <Link to='/'>

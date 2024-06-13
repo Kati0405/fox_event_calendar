@@ -1,14 +1,17 @@
 import { Formik, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 import { contactsSchema } from '../../schemas/contacts';
 
-import { setContactInfo } from 'src/redux/slices/contactInfoSlice';
+import { setContactFormValues } from 'src/redux/slices/contactInfoSlice';
 import InputField from 'src/components/InputField/InputField';
 
 const ContactInfoPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const initialValues = useSelector((state: RootState) => state.contact);
 
   const navigateToShipmentInfo = () => {
     navigate('shipment_information');
@@ -18,10 +21,10 @@ const ContactInfoPage = () => {
     <>
       <h1 className='text-4xl text-dark-blue mb-8'>Contact Information</h1>
       <Formik
-        initialValues={{ firstName: '', lastName: '', email: '', phone: '' }}
+        initialValues={initialValues}
         validationSchema={contactsSchema}
         onSubmit={(values) => {
-          dispatch(setContactInfo(values));
+          dispatch(setContactFormValues(values));
           navigateToShipmentInfo();
         }}
       >

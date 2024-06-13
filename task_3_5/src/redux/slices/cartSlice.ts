@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface CartState {
+export interface CartState {
   cartItems: CartItem[];
   quantity: number;
   total: number;
@@ -39,15 +39,16 @@ const cartSlice = createSlice({
         (item) => item.id !== action.payload
       );
     },
-    updateQuantity: (
-      state,
-      action: PayloadAction<{ id: number; quantity: number }>
-    ) => {
-      const item = state.cartItems.find(
-        (item) => item.id === action.payload.id
-      );
+    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+      const { id, quantity } = action.payload;
+      const item = state.cartItems.find((item) => item.id === id);
+
       if (item) {
-        item.quantity = action.payload.quantity;
+        if (quantity > 0) {
+          item.quantity = quantity;
+        } else {
+          state.cartItems = state.cartItems.filter((item) => item.id !== id);
+        }
       }
     },
     calculateTotals: (state) => {

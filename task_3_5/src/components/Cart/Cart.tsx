@@ -15,7 +15,7 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(calculateTotals());
-  }, cartItems);
+  }, [cartItems]);
 
   const navigate = useNavigate();
   const navigateToContactInfo = () => {

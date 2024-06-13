@@ -1,14 +1,18 @@
 import { Formik, Form } from 'formik';
+
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { shipmentSchema } from 'src/schemas/shipment';
-import { setShipmentInfo } from 'src/redux/slices/shipmentInfoSlice';
+import { setShipmentFormValues } from 'src/redux/slices/shipmentInfoSlice';
 import InputField from 'src/components/InputField/InputField';
+import { RootState } from 'src/redux/store';
 
 const ShipmentInfoPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const initialValues = useSelector((state: RootState) => state.shipment);
 
   const navigateToCheckout = () => {
     navigate('/checkout');
@@ -18,17 +22,10 @@ const ShipmentInfoPage = () => {
     <>
       <h1 className='text-4xl text-dark-blue mb-8'>Shipment Information</h1>
       <Formik
-        initialValues={{
-          address: '',
-          appartment: '',
-          city: '',
-          country: '',
-          state: '',
-          zipcode: '',
-        }}
+        initialValues={initialValues}
         validationSchema={shipmentSchema}
         onSubmit={(values) => {
-          dispatch(setShipmentInfo(values));
+          dispatch(setShipmentFormValues(values));
           navigateToCheckout();
         }}
       >
