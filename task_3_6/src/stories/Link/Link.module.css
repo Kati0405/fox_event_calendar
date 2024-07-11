@@ -1,0 +1,20 @@
+.link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.9375em;
+  font-weight: bolder;
+}
+
+.link:hover:not(.link-disabled) {
+  text-decoration: underline;
+}
+
+.link:active:not(.link-disabled) {
+  color: var(--color-primary__pressed);
+  text-decoration: underline;
+}
+
+.link-disabled {
+  color: #575d58;
+  cursor: not-allowed;
+}
