@@ -1,6 +1,5 @@
 import { Meta, StoryFn } from '@storybook/react';
 import Button, { ButtonProps } from './Button';
-import { options } from './constants';
 import { FaPlay } from 'react-icons/fa';
 
 const meta: Meta<typeof Button> = {
@@ -11,7 +10,7 @@ const meta: Meta<typeof Button> = {
   },
   argTypes: {
     variant: {
-      options: options.variants,
+      options: ['primary', 'secondary'],
       control: { type: 'radio' },
     },
     disabled: {
