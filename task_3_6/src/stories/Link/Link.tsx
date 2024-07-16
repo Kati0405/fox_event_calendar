@@ -1,6 +1,5 @@
-import classNames from 'classnames';
-import { ReactNode } from 'react';
-import styles from './Link.module.css';
+import React, { ReactNode } from 'react';
+import styled, { css } from 'styled-components';
 
 export interface LinkProps {
   children?: ReactNode;
@@ -8,24 +7,47 @@ export interface LinkProps {
   href?: string;
 }
 
+const StyledLink = styled.a<{ disabled?: boolean }>`
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.9375em;
+  font-weight: bolder;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: var(--color-primary__pressed);
+    text-decoration: underline;
+  }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      color: #575d58;
+      cursor: not-allowed;
+      pointer-events: none;
+
+      &:hover {
+        text-decoration: none;
+      }
+    `}
+`;
+
 const Link: React.FC<LinkProps> = ({
   children,
   disabled = false,
   href = '#',
 }) => {
   return (
-    <a
+    <StyledLink
       href={disabled ? undefined : href}
       aria-disabled={disabled}
-      className={classNames(styles.link, disabled && styles['link-disabled'])}
-      onClick={(e) => {
-        if (disabled) {
-          e.preventDefault();
-        }
-      }}
+      disabled={disabled}
     >
       {children}
-    </a>
+    </StyledLink>
   );
 };
 

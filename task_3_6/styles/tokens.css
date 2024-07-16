@@ -1,5 +1,6 @@
 :root {
   --font-family-sans: 'Roboto', sans-serif;
+  --font-family-secondary: 'Inter', sans-serif;
   --color-primary: #00ae1c;
   --color-secondary: #ffffff;
   --color-primary__pressed: #0cd52b;

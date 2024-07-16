@@ -6,6 +6,7 @@ export interface ButtonProps {
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
   icon?: ReactNode;
+  onClick?: () => void;
 }
 
 const buttonVariants = {
