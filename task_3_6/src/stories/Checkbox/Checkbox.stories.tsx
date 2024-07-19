@@ -8,6 +8,9 @@ const meta: Meta<typeof Checkbox> = {
     checked: {
       control: { type: 'boolean' },
     },
+    disabled: {
+      control: { type: 'boolean' },
+    },
   },
 };
 
@@ -23,4 +26,10 @@ Unchecked.args = {
 export const Checked = Template.bind({});
 Checked.args = {
   checked: true,
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  checked: false,
+  disabled: true,
 };

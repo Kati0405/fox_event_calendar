@@ -1,9 +1,9 @@
 import { Meta, StoryFn } from '@storybook/react';
-import CheckboxWithLabel, { CheckboxWithLabelProps } from './CheckboxLabeled';
+import CheckboxLabeled, { CheckboxLabeledProps } from './CheckboxLabeled';
 
-const meta: Meta<typeof CheckboxWithLabel> = {
-  title: 'Components/CheckboxLabeled',
-  component: CheckboxWithLabel,
+const meta: Meta<typeof CheckboxLabeled> = {
+  title: 'Components/CheckboxWithLabel',
+  component: CheckboxLabeled,
   argTypes: {
     checked: {
       control: { type: 'boolean' },
@@ -11,23 +11,33 @@ const meta: Meta<typeof CheckboxWithLabel> = {
     label: {
       control: 'text',
     },
+    disabled: {
+      control: { type: 'boolean' },
+    },
   },
 };
 
 export default meta;
 
-const Template: StoryFn<CheckboxWithLabelProps> = (args) => (
-  <CheckboxWithLabel {...args} />
+const Template: StoryFn<CheckboxLabeledProps> = (args) => (
+  <CheckboxLabeled {...args} />
 );
 
 export const Unchecked = Template.bind({});
 Unchecked.args = {
   checked: false,
-  label: 'Label',
+  label: 'Text',
 };
 
 export const Checked = Template.bind({});
 Checked.args = {
   checked: true,
-  label: 'Label',
+  label: 'Text',
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  checked: false,
+  label: 'Text',
+  disabled: true,
 };
