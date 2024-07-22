@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { IoMdArrowDropdown } from 'react-icons/io';
+
 export interface DropdownProps {
   options: string[];
   value: string;
