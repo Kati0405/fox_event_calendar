@@ -24,59 +24,67 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(task.text);
 
-  const handleEditClick = () => setIsEditing(true);
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditing(true);
+  };
 
-  const handleConfirmClick = (task: Task) => {
+  const handleConfirmClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setEditedText(editedText);
     const updatedTask = { ...task, text: editedText };
-    console.log(updatedTask);
     editTask(updatedTask);
     setIsEditing(false);
-    console.log(editedText);
+  };
+
+  const handleTaskClick = () => {
+    toggleTaskDone(task);
   };
 
   return (
-    <li
-      key={task._id}
-      className={`task-box ${task.isDone ? 'crossed-out' : ''} ${
-        isEditing ? 'editing' : ''
-      }`}
-    >
-      <Checkbox
-        checked={task.isDone}
-        onChange={() => toggleTaskDone(task)}
-        ariaLabel='Mark task as done'
-      />
-      <div className='line'></div>
-      <div className='text-field-wrapper'>
-        <textarea
-          className={`text-field ${task.isDone ? 'crossed-out' : ''}`}
-          value={isEditing ? editedText : task.text}
-          onChange={(e) => {
-            setEditedText(e.target.value);
-          }}
-          readOnly={!isEditing}
+    <li key={task._id}>
+      <button
+        className={`task-box ${task.isDone ? 'crossed-out' : ''} ${isEditing ? 'editing' : ''}`}
+        onClick={handleTaskClick}
+      >
+        <Checkbox
+          checked={task.isDone}
+          onChange={() => toggleTaskDone(task)}
+          ariaLabel='Mark task as done'
         />
-      </div>
-      <div className='buttons-container'>
-        {!isEditing ? (
-          <>
-            <button className='edit-btn' onClick={handleEditClick}>
-              <img src={edit_icon} alt='Edit' />
+        <div className='text-field-wrapper'>
+          <textarea
+            className={`text-field ${task.isDone ? 'crossed-out' : ''}`}
+            value={isEditing ? editedText : task.text}
+            onChange={(e) => {
+              setEditedText(e.target.value);
+            }}
+            readOnly={!isEditing}
+          />
+        </div>
+        <div className='buttons-container'>
+          {!isEditing ? (
+            <>
+              <button className='edit-btn' onClick={handleEditClick}>
+                <img src={edit_icon} alt='Edit' />
+              </button>
+              <button
+                className='delete-btn'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteTask(task);
+                }}
+              >
+                <img src={delete_icon} alt='Delete' />
+              </button>
+            </>
+          ) : (
+            <button className='confirm-btn' onClick={handleConfirmClick}>
+              <img src={confirm_icon} alt='Confirm' />
             </button>
-            <button className='delete-btn' onClick={() => deleteTask(task)}>
-              <img src={delete_icon} alt='Delete' />
-            </button>
-          </>
-        ) : (
-          <button
-            className='confirm-btn'
-            onClick={() => handleConfirmClick(task)}
-          >
-            <img src={confirm_icon} alt='Confirm' />
-          </button>
-        )}
-      </div>
+          )}
+        </div>
+      </button>
     </li>
   );
 };

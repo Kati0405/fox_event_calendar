@@ -1,3 +1,7 @@
+li {
+  list-style-type: none;
+}
+
 .task-box {
   margin-right: 2rem;
   margin-top: 1rem;
@@ -7,6 +11,7 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border: none;
 }
 
 .task-box:hover {
@@ -15,12 +20,6 @@
 
 .task-box:hover .text-field {
   background-color: #efefef;
-}
-
-.line {
-  height: 90%;
-  border-left: 2px solid #ccc;
-  margin: 0 10px;
 }
 
 .checkbox {
