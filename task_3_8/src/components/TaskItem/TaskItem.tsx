@@ -6,6 +6,7 @@ import './TaskItem.css';
 import delete_icon from '../../assets/delete.svg';
 import edit_icon from '../../assets/edit.svg';
 import confirm_icon from '../../assets/confirm.svg';
+import Checkbox from '../../stories/Checkbox/Checkbox';
 
 interface TaskItemProps {
   task: Task;
@@ -41,11 +42,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         isEditing ? 'editing' : ''
       }`}
     >
-      <input
-        type='checkbox'
-        className='checkbox'
+      <Checkbox
         checked={task.isDone}
         onChange={() => toggleTaskDone(task)}
+        ariaLabel='Mark task as done'
       />
       <div className='line'></div>
       <div className='text-field-wrapper'>
