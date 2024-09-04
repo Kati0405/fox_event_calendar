@@ -60,25 +60,31 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               setEditedText(e.target.value);
             }}
             readOnly={!isEditing}
+            onClick={(e) => {
+              if (isEditing) {
+                e.stopPropagation();
+              }
+            }}
           />
         </div>
         <div className='buttons-container'>
-          {!isEditing ? (
-            <>
-              <button className='edit-btn' onClick={handleEditClick}>
-                <img src={edit_icon} alt='Edit' />
-              </button>
-              <button
-                className='delete-btn'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteTask(task);
-                }}
-              >
-                <img src={delete_icon} alt='Delete' />
-              </button>
-            </>
-          ) : (
+          {!isEditing && !task.isDone && (
+            <button className='edit-btn' onClick={handleEditClick}>
+              <img src={edit_icon} alt='Edit' />
+            </button>
+          )}
+          {!isEditing && (
+            <button
+              className='delete-btn'
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTask(task);
+              }}
+            >
+              <img src={delete_icon} alt='Delete' />
+            </button>
+          )}
+          {isEditing && (
             <button className='confirm-btn' onClick={handleConfirmClick}>
               <img src={confirm_icon} alt='Confirm' />
             </button>
