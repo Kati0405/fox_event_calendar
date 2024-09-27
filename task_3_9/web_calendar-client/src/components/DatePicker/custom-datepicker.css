@@ -1,0 +1,19 @@
+.react-datepicker__day--selected,
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__day--keyboard-selected:hover {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
+
+.react-datepicker__navigation--previous {
+  left: 170px;
+}
+
+.react-datepicker__header {
+  background-color: white;
+}
+
+.react-datepicker__month-container {
+  box-shadow: 0px 4px 4px 0px #0000001a;
+}
