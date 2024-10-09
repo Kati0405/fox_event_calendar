@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 
-import { Day as DayType, Event } from '../components/Day/Day';
+import { Day as DayType, Event } from '../types/types';
 
 export const Context = createContext<{
     selectedView: string;

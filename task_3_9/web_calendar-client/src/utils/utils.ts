@@ -1,6 +1,10 @@
 import dayjs from "dayjs";
 
-import { Day as DayType, Event } from '../components/Day/Day'
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import type { ClassValue } from "clsx";
+
+import { Day as DayType, Event } from '../types/types'
 
 
 export const getMonth = (month = dayjs().month()): DayType[][] => {
@@ -28,7 +32,7 @@ export const getWeek = (date: dayjs.Dayjs = dayjs(), events: Event[] = []): DayT
         const dayDate = startOfWeek.add(index, 'day').toDate();
 
         const dayEvents = events.filter(
-            (event) => event.date === dayjs(dayDate).format('YYYY-MM-DD')
+            (event) => dayjs(event.start_date).format('YYYY-MM-DD') === dayjs(dayDate).format('YYYY-MM-DD')
         );
 
         return {
@@ -39,4 +43,6 @@ export const getWeek = (date: dayjs.Dayjs = dayjs(), events: Event[] = []): DayT
 
     return weekDays;
 };
+
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 

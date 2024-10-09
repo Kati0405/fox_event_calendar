@@ -1,5 +1,5 @@
 import React from 'react';
-import { Day as DayComponent, Day as DayType } from '../Day/Day';
+import { Day as DayComponent, Day as DayType } from '../day-view/Day/Day';
 
 export type Month = DayType[];
 

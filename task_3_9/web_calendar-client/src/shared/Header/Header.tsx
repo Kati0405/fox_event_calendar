@@ -99,6 +99,8 @@ export const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
     const today = dayjs();
     setCurrentDay({ date: today.toDate() });
     setCurrentMonth(today.month());
+    const startOfWeek = today.startOf('week');
+    setCurrentWeek(getWeek(startOfWeek));
   };
 
   return (
@@ -126,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
         </div>
         <h2 className='font-bold'>
           {selectedView === 'Week'
-            ? dayjs(currentWeek[0].date).format('MMMM YYYY') // need correct
+            ? dayjs(currentWeek[0].date).format('MMMM YYYY')
             : dayjs(currentDay.date).format('DD MMMM YYYY')}
         </h2>
       </div>

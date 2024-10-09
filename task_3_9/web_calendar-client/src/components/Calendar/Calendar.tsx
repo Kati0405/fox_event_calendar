@@ -4,7 +4,8 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import { Context } from '../../context/context';
 import { getMonth } from '../../utils/utils';
-import { Day as DayType } from '../Day/Day';
+
+import { Day as DayType } from '../../types/types';
 
 export default function Calendar() {
   const { currentMonth, setCurrentMonth } = useContext(Context)!;
@@ -26,6 +27,10 @@ export default function Calendar() {
 
   const isCurrentMonth = (date: Date) => {
     return dayjs(date).month() === currentMonth;
+  };
+
+  const isToday = (date: Date) => {
+    return dayjs(date).isSame(dayjs(), 'day');
   };
 
   return (
@@ -54,8 +59,12 @@ export default function Calendar() {
             {row.map((day, idx) => (
               <button
                 key={idx}
-                className={`py-1 w-full ${
-                  isCurrentMonth(day.date) ? 'text-black' : 'text-gray-400'
+                className={`py-1 w-full rounded-lg ${
+                  isToday(day.date)
+                    ? 'bg-[#00AE1C] text-white'
+                    : isCurrentMonth(day.date)
+                    ? 'text-black'
+                    : 'text-gray-400'
                 }`}
               >
                 <span className='text-sm'>{dayjs(day.date).format('D')}</span>

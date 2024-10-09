@@ -4,7 +4,7 @@ import MainPage from './pages/MainPage/MainPage';
 import { useState } from 'react';
 import { User } from './types/types';
 import { getWeek } from './utils/utils';
-import { Day as DayType } from './components/Day/Day';
+import { Day as DayType } from './types/types';
 import { Context } from './context/context';
 
 import './styles/global.css';
@@ -13,12 +13,14 @@ import dayjs from 'dayjs';
 import { events } from './constants/constants';
 
 const App: React.FC = () => {
+  const initialDate = dayjs().format('YYYY-MM-DD');
   const [user, setUser] = useState<User | null>(null);
   const [currentDay, setCurrentDay] = useState<DayType>({
     date: dayjs().toDate(),
-    events: events.filter(
-      (event) => event.date === dayjs().format('YYYY-MM-DD')
-    ),
+    events:
+      events.filter(
+        (event) => dayjs(event.start_date).format('YYYY-MM-DD') === initialDate
+      ) || [],
   });
   const [currentWeek, setCurrentWeek] = useState<DayType[]>(
     getWeek(dayjs(), events)

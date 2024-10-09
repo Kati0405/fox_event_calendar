@@ -4,12 +4,12 @@ export interface User {
     avatar: string;
 }
 
-export interface Event {
-    date: string;
+export type Event = {
+    id: string;
     title: string;
-    startTime: string;
-    endTime: string;
-}
+    start_date: Date;
+    end_date: Date;
+};
 
 export interface Day {
     date: Date;

@@ -1,11 +1,11 @@
 import { Header } from '../Header/Header';
 import { User } from '../../types/types';
 import { SidePanel } from '../SidePanel/SidePanel';
-import { Week } from '../../components/Week/Week';
+import { Week } from '../../components/week-view/Week/Week';
 import { Day as DayType } from '../../types/types';
 import { useContext } from 'react';
 import { Context } from '../../context/context';
-import { Day as DayComponent } from '../../components/Day/Day';
+import { Day as DayComponent } from '../../components/day-view/Day/Day';
 
 interface LayoutProps {
   user: User | null;
@@ -27,10 +27,10 @@ export const Layout: React.FC<LayoutProps> = ({
   return (
     <>
       <Header user={user} setUser={setUser} />
-      <div className='flex gap-8 pt-8'>
+      <div className='flex gap-8 pt-8 mr-8'>
         <SidePanel />
         {selectedView === 'Week' ? (
-          <Week week={week} />
+          <Week date={currentDay.date} />
         ) : (
           <DayComponent date={currentDay.date} events={currentDayEvents} />
         )}
