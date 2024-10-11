@@ -23,9 +23,10 @@ const StyledCheckbox = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
-  border: 2px solid ${({ color }) => color || '#323749'};
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.2rem;
+  border: 3px solid ${({ color }) => color || '#323749'};
   background-color: white;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;

@@ -1,5 +1,5 @@
 import { Header } from '../Header/Header';
-import { Event, User } from '../../types/types';
+import { Calendar, Event, User } from '../../types/types';
 import { SidePanel } from '../SidePanel/SidePanel';
 import { Week } from '../../components/week-view/Week/Week';
 import { Day as DayType } from '../../types/types';
@@ -13,6 +13,7 @@ interface LayoutProps {
   week: DayType[];
   currentDay: DayType;
   events: Event[];
+  calendars: Calendar[];
 }
 
 export const Layout: React.FC<LayoutProps> = ({

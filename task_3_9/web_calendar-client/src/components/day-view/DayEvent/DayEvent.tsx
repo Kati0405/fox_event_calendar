@@ -22,13 +22,18 @@ export const DayEvent: React.FC<DayEvent> = ({
   grouplength,
   containerHeight,
 }) => {
-  const { selectedView } = useContext(Context)!;
+  const { selectedView, calendars } = useContext(Context)!;
   const today = startOfDay(day);
   const eventDuration = differenceInMinutes(event.end_time, event.start_time);
 
   const [isHovered, setIsHovered] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const calendar = calendars.find(
+    (calendar) => calendar.id === event.calendarId
+  );
+  const eventColor = calendar ? calendar.color : 'green';
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -64,7 +69,7 @@ export const DayEvent: React.FC<DayEvent> = ({
           ? `calc((100% - 96px) * ${widthPercentage})`
           : `100% * ${widthPercentage}`
       }`,
-      backgroundColor: isHovered ? '#fcb42fc5' : '#ffc1234d',
+      backgroundColor: isHovered ? `${eventColor}c5` : `${eventColor}4d`,
     };
 
     if (isLast) {

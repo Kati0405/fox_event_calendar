@@ -44,9 +44,9 @@ export const MyCalendars = () => {
           <Icon icon={FaPlus}></Icon>
         </div>
       </div>
-      <ul className='mt-2'>
+      <ul className='mt-3'>
         {calendars.map((calendar) => (
-          <li key={calendar.id} className='flex items-center mb-2'>
+          <li key={calendar.id} className='flex items-center mb-3'>
             <CheckboxWithLabel
               label={calendar.title}
               checked={checkedCalendars.includes(calendar.id)}

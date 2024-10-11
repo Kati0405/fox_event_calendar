@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 
-import { Day as DayType, Event } from '../types/types';
+import { Calendar, Day as DayType, Event } from '../types/types';
 
 export const Context = createContext<{
     selectedView: string;
@@ -13,4 +13,6 @@ export const Context = createContext<{
     setCurrentDay: React.Dispatch<React.SetStateAction<DayType>>;
     events: Event[]
     setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
+    calendars: Calendar[];
+    setCalendars: React.Dispatch<React.SetStateAction<Calendar[]>>
 } | null>(null);

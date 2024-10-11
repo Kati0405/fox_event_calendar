@@ -1,4 +1,4 @@
-import { Event, User } from '../../types/types';
+import { Calendar, Event, User } from '../../types/types';
 import { Layout } from '../../shared/Layout/Layout';
 import { Day as DayType } from '../../types/types';
 import { useContext } from 'react';
@@ -10,10 +10,11 @@ interface MainPageProps {
   week: DayType[];
   currentDay: DayType;
   events: Event[];
+  calendars: Calendar[];
 }
 
 const MainPage: React.FC<MainPageProps> = ({ user, setUser, week }) => {
-  const { currentDay, events } = useContext(Context)!;
+  const { currentDay, events, calendars } = useContext(Context)!;
 
   return (
     <>
@@ -23,6 +24,7 @@ const MainPage: React.FC<MainPageProps> = ({ user, setUser, week }) => {
         week={week}
         currentDay={currentDay}
         events={events}
+        calendars={calendars}
       ></Layout>
     </>
   );

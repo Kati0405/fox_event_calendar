@@ -5,12 +5,20 @@ import { IoMdTime } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
 import Icon from '../Icon/Icon';
 import { format } from 'date-fns';
+import { useContext } from 'react';
+import { Context } from '../../context/context';
 
 interface EventInfoProps {
   event: Event;
 }
 
 export const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
+  const { calendars } = useContext(Context)!;
+  const findCalendarTitleById = (id: string) => {
+    const calendar = calendars.find((calendar) => calendar.id === id);
+    return calendar ? calendar.title : 'Unknown Calendar';
+  };
+
   return (
     <div className='event-info relative'>
       <div className='event-info_actions flex flex-row absolute gap-3 right-8 top-[-3.2rem]'>
@@ -34,7 +42,8 @@ export const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
       </div>
       <div className='flex flex-row gap-3'>
         <Icon icon={IoCalendarOutline}></Icon>
-        {event.calendar}
+
+        {findCalendarTitleById(event.calendarId)}
       </div>
       <div className='flex flex-row gap-3'>
         <Icon icon={MdOutlineSubject}></Icon>

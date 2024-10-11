@@ -103,7 +103,7 @@ export const events: Event[] = [
         end_time: add(addDays(startOfToday(), 1), { hours: 15, minutes: 0 }),
         title: "Tomorrow's Event",
         description: "This is the description for Tomorrow's Event.",
-        calendarId: "0",
+        calendarId: "1",
     },
     {
         id: "9",
@@ -112,7 +112,7 @@ export const events: Event[] = [
         end_time: add(addDays(startOfToday(), 2), { hours: 11, minutes: 30 }),
         title: "Day After Tomorrow's Event",
         description: "This is the description for Day After Tomorrow's Event.",
-        calendarId: "0",
+        calendarId: "2",
     },
     {
         id: "10",
@@ -121,6 +121,6 @@ export const events: Event[] = [
         end_time: add(subDays(startOfToday(), 3), { hours: 17, minutes: 0 }),
         title: "3 Days Ago Event",
         description: "This is the description for 3 Days Ago Event.",
-        calendarId: "0",
+        calendarId: "2",
     },
 ];
