@@ -33,9 +33,7 @@ export const Week: React.FC<WeekProps> = () => {
   const containerHeight = hours.length * 56;
 
   const groupedEventsByDay = currentWeek.reduce((acc, day) => {
-    const dayEvents = events.filter((event) =>
-      isSameDay(event.start_date, day.date)
-    );
+    const dayEvents = events.filter((event) => isSameDay(event.date, day.date));
     acc[day.date.toISOString()] = createGroups(dayEvents);
     return acc;
   }, {} as { [key: string]: Event[][] });

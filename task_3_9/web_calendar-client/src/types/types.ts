@@ -7,9 +7,18 @@ export interface User {
 export type Event = {
     id: string;
     title: string;
-    start_date: Date;
-    end_date: Date;
+    date: Date;
+    start_time: Date;
+    end_time: Date;
+    description: string;
+    calendarId: string;
 };
+
+export type Calendar = {
+    id: string;
+    title: string;
+    color: string;
+}
 
 export interface Day {
     date: Date;

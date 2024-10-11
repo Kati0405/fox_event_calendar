@@ -12,6 +12,7 @@ export interface InputProps {
   hasError?: boolean;
   errorMessage?: string;
   type?: 'text' | 'password';
+  className?: string;
 }
 
 const inputStates = {
@@ -97,6 +98,7 @@ const ToggleButton = styled.button`
 `;
 
 const InputContainer = styled.div`
+  width: 100%;
   margin-bottom: 1rem;
 `;
 
@@ -109,6 +111,7 @@ const Input: React.FC<InputProps> = ({
   hasError,
   errorMessage,
   type = 'text',
+  className,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -117,7 +120,6 @@ const Input: React.FC<InputProps> = ({
     setShowPassword((prev) => !prev);
   };
 
-  // Generate a unique id for the input and label association
   const inputId = `input-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
@@ -136,6 +138,7 @@ const Input: React.FC<InputProps> = ({
           isActive={isActive}
           onFocus={() => setIsActive(true)}
           onBlur={() => setIsActive(false)}
+          className={className}
         />
         {type === 'password' && (
           <ToggleButton

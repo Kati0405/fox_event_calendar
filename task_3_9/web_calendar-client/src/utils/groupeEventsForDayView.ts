@@ -14,9 +14,9 @@ const createGroups = (
     const [first, ...rest] = events;
 
     const eventsInRange = rest.filter((event) =>
-        isWithinInterval(event.start_date, {
-            start: first.start_date,
-            end: add(first.end_date, { minutes: -1 }),
+        isWithinInterval(event.start_time, {
+            start: first.start_time,
+            end: add(first.end_time, { minutes: -1 }),
         })
     );
 
@@ -33,11 +33,11 @@ const createGroups = (
 
 export const groupEvents = (date: Date, events: Event[]): GroupedEvents => {
     const eventsToday = events.filter(
-        (event) => isSameDay(event.start_date, date)
+        (event) => isSameDay(event.start_time, date)
     );
 
     const sortedEvents = eventsToday.sort(
-        (a, b) => a.start_date.getTime() - b.start_date.getTime()
+        (a, b) => a.start_time.getTime() - b.start_time.getTime()
     );
 
     const eventGroups = createGroups(sortedEvents);

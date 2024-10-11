@@ -12,9 +12,9 @@ export const createGroups = (
     const [first, ...rest] = events;
 
     const eventsInRange = rest.filter((event) =>
-        isWithinInterval(event.start_date, {
-            start: first.start_date,
-            end: add(first.end_date, { minutes: -1 }),
+        isWithinInterval(event.start_time, {
+            start: first.start_time,
+            end: add(first.end_time, { minutes: -1 }),
         })
     );
 

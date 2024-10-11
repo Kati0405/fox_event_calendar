@@ -4,7 +4,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 
 export interface ModalProps {
   title: string;
-  content: string;
+  content: React.ReactNode;
   onClose: () => void;
 }
 

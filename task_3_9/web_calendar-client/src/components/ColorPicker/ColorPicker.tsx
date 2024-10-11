@@ -50,7 +50,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   onChange,
 }) => {
   return (
-    <>
+    <div className='flex flex-col gap-3 mb-4'>
       <Title>Colour</Title>
       <Palette>
         {colors.map((color) => (
@@ -65,7 +65,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           </ColorSwatchWrapper>
         ))}
       </Palette>
-    </>
+    </div>
   );
 };
 

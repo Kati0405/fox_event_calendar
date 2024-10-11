@@ -12,4 +12,5 @@ export const Context = createContext<{
     currentDay: DayType;
     setCurrentDay: React.Dispatch<React.SetStateAction<DayType>>;
     events: Event[]
+    setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
 } | null>(null);

@@ -1,13 +1,14 @@
-import React from 'react';
 import styled from 'styled-components';
-import checkmark from '../../assets/svg/checkmark.svg';
+import checkmark from '../../assets/checkmark.svg';
 import { ReactSVG } from 'react-svg';
+import { theme } from '../../theme';
 
 export interface CheckboxProps {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
   ariaLabel?: string;
+  color?: string;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -17,28 +18,27 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 const StyledCheckbox = styled.div<{
   checked: boolean;
   disabled: boolean;
+  color?: string;
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
-  border: 2px solid #323749;
+  border: 2px solid ${({ color }) => color || '#323749'};
   background-color: white;
   cursor: pointer;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 
-  ${(props) =>
-    props.checked &&
+  ${({ checked, color }) =>
+    checked &&
     `
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
+    background-color: ${color || theme.colors.color_primary};
+    border-color: ${color || theme.colors.color_primary};
   `}
 
-  ${(props) =>
-    props.disabled &&
+  ${({ disabled }) =>
+    disabled &&
     `
     background-color: #e0e0e0;
     border-color: #e0e0e0;
@@ -46,19 +46,19 @@ const StyledCheckbox = styled.div<{
   `}
 
   &:hover {
-    ${(props) =>
-      !props.disabled &&
+    ${({ disabled, color }) =>
+      !disabled &&
       `
-      border-color: var(--color-primary-hover);
+      border-color: ${color || theme.colors.border_color};
     `}
   }
 
   &:active {
-    ${(props) =>
-      !props.disabled &&
+    ${({ disabled, color }) =>
+      !disabled &&
       `
-      background-color: var(--color-primary-active);
-      border-color: var(--color-primary-active);
+      background-color: ${color || theme.colors.color_secondary};
+      border-color: ${color || theme.colors.border_color};
     `}
   }
 `;
@@ -72,6 +72,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   disabled = false,
   ariaLabel,
+  color,
 }) => (
   <CheckboxContainer>
     <HiddenCheckbox
@@ -85,6 +86,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
       disabled={disabled}
       role='checkbox'
       aria-label={ariaLabel}
+      color={color}
     >
       {checked && <ReactSVG src={checkmark} role='img' />}
     </StyledCheckbox>

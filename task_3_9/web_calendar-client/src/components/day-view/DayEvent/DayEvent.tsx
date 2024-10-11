@@ -1,7 +1,9 @@
 import { startOfDay, differenceInMinutes, format } from 'date-fns';
 import { Event } from '../../../types/types';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Context } from '../../../context/context';
+import Modal from '../../Modal/Modal';
+import { EventInfo } from '../../EventInfo/EventInfo';
 
 const minutes_in_day = 24 * 60;
 
@@ -22,10 +24,24 @@ export const DayEvent: React.FC<DayEvent> = ({
 }) => {
   const { selectedView } = useContext(Context)!;
   const today = startOfDay(day);
-  const eventDuration = differenceInMinutes(event.end_date, event.start_date);
+  const eventDuration = differenceInMinutes(event.end_time, event.start_time);
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = (
+    e?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (e) e.stopPropagation();
+    setIsModalOpen(false);
+  };
 
   const generateBoxStyle = () => {
-    const minutesPassed = differenceInMinutes(event.start_date, today);
+    const minutesPassed = differenceInMinutes(event.start_time, today);
 
     const percentage = minutesPassed / minutes_in_day;
     const top = percentage * containerHeight;
@@ -42,12 +58,13 @@ export const DayEvent: React.FC<DayEvent> = ({
       top,
       height,
       padding: '2px 8px',
-      zIndex: 100 + index,
+      zIndex: isHovered ? 100 + index + 10 : 100 + index,
       width: `${
         selectedView === 'Day'
           ? `calc((100% - 96px) * ${widthPercentage})`
           : `100% * ${widthPercentage}`
       }`,
+      backgroundColor: isHovered ? '#fcb42fc5' : '#ffc1234d',
     };
 
     if (isLast) {
@@ -64,17 +81,28 @@ export const DayEvent: React.FC<DayEvent> = ({
   };
 
   return (
-    <div>
+    <div
+      onClick={handleOpenModal}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         style={generateBoxStyle()}
         className='bg-[#EEC04C4D] border border-white rounded cursor-pointer absolute'
       >
         <h1 className='text-xs'>
           {`${event.title}, 
-            ${format(event.start_date, 'h:mm a')} - 
-            ${format(event.end_date, 'h:mm a')}`}
+            ${format(event.start_time, 'h:mm a')} - 
+            ${format(event.end_time, 'h:mm a')}`}{' '}
         </h1>
       </div>
+      {isModalOpen && (
+        <Modal
+          title='Event Information'
+          content={<EventInfo event={event} />}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

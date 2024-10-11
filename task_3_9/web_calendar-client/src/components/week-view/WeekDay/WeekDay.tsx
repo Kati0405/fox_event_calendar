@@ -1,5 +1,5 @@
 import { cn } from '../../../utils/utils';
-import { endOfDay, startOfDay, eachHourOfInterval } from 'date-fns';
+import { endOfDay, startOfDay, eachHourOfInterval, isSameDay } from 'date-fns';
 import { Event } from '../../../types/types';
 import { DayEvent } from '../../day-view/DayEvent/DayEvent';
 import { useContext, useState } from 'react';
@@ -15,12 +15,14 @@ export const WeekDay: React.FC<WeekDayProps> = ({ day }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
   const { events } = useContext(Context)!;
 
+  const dayEvents = events.filter((event) => isSameDay(event.date, day));
+
+  const dayGroups = createGroups(dayEvents);
+
   const hours = eachHourOfInterval({
     start: startOfDay(day),
     end: endOfDay(day),
   });
-
-  const dayGroups = createGroups(events);
 
   return (
     <div
@@ -30,7 +32,6 @@ export const WeekDay: React.FC<WeekDayProps> = ({ day }) => {
       <div className='w-[100%] h-full absolute'>
         <div className='w-full h-full relative' ref={(ref) => setRef(ref)}>
           {dayGroups.map((group) => {
-            // console.log(group.length);
             return group.map((event, index) => (
               <DayEvent
                 day={day}

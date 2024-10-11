@@ -9,6 +9,7 @@ export interface ButtonProps {
   onClick?: () => void;
   ariaLabel?: string;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 const buttonVariants = {
@@ -102,6 +103,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   ariaLabel,
   className,
+  type = 'button',
 }) => (
   <StyledButton
     variant={variant}
@@ -110,9 +112,11 @@ const Button: React.FC<ButtonProps> = ({
     aria-label={ariaLabel}
     aria-disabled={disabled}
     className={className}
+    type={type}
   >
     {icon && <IconWrapper>{icon}</IconWrapper>}
     {children}
   </StyledButton>
 );
+
 export default Button;
