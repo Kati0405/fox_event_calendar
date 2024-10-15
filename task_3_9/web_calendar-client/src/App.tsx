@@ -1,14 +1,15 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import dayjs from 'dayjs';
+
 import LoginPage from './pages/LoginPage/LoginPage';
 import MainPage from './pages/MainPage/MainPage';
-import { useState } from 'react';
-import { Calendar, Event, User } from './types/types';
-import { getWeek } from './utils/utils';
-import { Day as DayType } from './types/types';
-import { Context } from './context/context';
+import { Calendar, Event, User } from '@/types/types';
+import { getWeek } from '@/utils/utils';
+import { Day as DayType } from '@/types/types';
+import { Context } from '@/context/context';
 
 import './styles/global.css';
-import dayjs from 'dayjs';
 
 import { events as initialEvents } from './constants/constants';
 import { calendars as initialCalendars } from './constants/constants';
@@ -18,6 +19,11 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<Event[]>(initialEvents);
   const [calendars, setCalendars] = useState<Calendar[]>(initialCalendars);
+  const [checkedCalendars, setCheckedCalendars] = useState<string[]>([
+    '0',
+    '1',
+    '2',
+  ]);
   const [currentDay, setCurrentDay] = useState<DayType>({
     date: dayjs().toDate(),
     events:
@@ -46,6 +52,8 @@ const App: React.FC = () => {
         setEvents,
         calendars,
         setCalendars,
+        checkedCalendars,
+        setCheckedCalendars,
       }}
     >
       <Router>

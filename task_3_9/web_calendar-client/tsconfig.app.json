@@ -7,10 +7,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "components/*": ["./components/*"],
-      "pages/*": ["./pages/*"],
-      "assets/*": ["./assets/*"],
-      "firebase/*": ["./firebase/*"]
+      "@/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"]
     },
 
     /* Bundler mode */

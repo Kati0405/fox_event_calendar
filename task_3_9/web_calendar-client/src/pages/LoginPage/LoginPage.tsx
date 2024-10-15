@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../../components/Button/Button';
-import { signInWithGoogle } from '../../firebase/firebaseConfig';
-import logo from '../../assets/svg/logo.svg';
-import { User } from '../../types/types';
+import Button from '@components/ui/Button';
+import { signInWithGoogle } from '@/firebase/firebaseConfig';
+import logo from '@/assets/svg/logo.svg';
+import { User } from '@/types/types';
 
 import { FcGoogle } from 'react-icons/fc';
 

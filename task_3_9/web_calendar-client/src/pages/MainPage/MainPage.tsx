@@ -1,8 +1,9 @@
-import { Calendar, Event, User } from '../../types/types';
-import { Layout } from '../../shared/Layout/Layout';
-import { Day as DayType } from '../../types/types';
 import { useContext } from 'react';
-import { Context } from '../../context/context';
+
+import { Calendar, Event, User } from '@/types/types';
+import { Layout } from '@/components/layout/Layout/Layout';
+import { Day as DayType } from '@/types/types';
+import { Context } from '@/context/context';
 
 interface MainPageProps {
   user: User | null;

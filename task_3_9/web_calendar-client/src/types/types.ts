@@ -1,4 +1,4 @@
-export interface User {
+export type User = {
     name: string;
     email: string;
     avatar: string;
@@ -18,9 +18,10 @@ export type Calendar = {
     id: string;
     title: string;
     color: string;
+    isDefault?: boolean
 }
 
-export interface Day {
+export type Day = {
     date: Date;
     events?: Event[];
 }

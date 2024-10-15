@@ -14,5 +14,7 @@ export const Context = createContext<{
     events: Event[]
     setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
     calendars: Calendar[];
-    setCalendars: React.Dispatch<React.SetStateAction<Calendar[]>>
+    setCalendars: React.Dispatch<React.SetStateAction<Calendar[]>>;
+    checkedCalendars: string[];
+    setCheckedCalendars: React.Dispatch<React.SetStateAction<string[]>>;
 } | null>(null);
