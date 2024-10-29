@@ -9,7 +9,7 @@ import { FcGoogle } from 'react-icons/fc';
 
 import './LoginPage.css';
 
-interface LoginPageProps {
+export interface LoginPageProps {
   setUser: (user: User | null) => void;
 }
 

@@ -1,20 +1,21 @@
-import React, { createContext } from 'react';
-
+import { createContext, Dispatch, SetStateAction } from 'react';
 import { Calendar, Day as DayType, Event } from '../types/types';
 
-export const Context = createContext<{
+interface CalendarContext {
     selectedView: string;
-    setSelectedView: React.Dispatch<React.SetStateAction<string>>;
+    setSelectedView: Dispatch<SetStateAction<string>>;
     currentMonth: number;
+    setCurrentMonth: Dispatch<SetStateAction<number>>;
     currentWeek: DayType[];
-    setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
-    setCurrentWeek: React.Dispatch<React.SetStateAction<DayType[]>>;
+    setCurrentWeek: Dispatch<SetStateAction<DayType[]>>;
     currentDay: DayType;
-    setCurrentDay: React.Dispatch<React.SetStateAction<DayType>>;
-    events: Event[]
-    setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
+    setCurrentDay: Dispatch<SetStateAction<DayType>>;
+    events: Event[];
+    setEvents: Dispatch<SetStateAction<Event[]>>;
     calendars: Calendar[];
-    setCalendars: React.Dispatch<React.SetStateAction<Calendar[]>>;
+    setCalendars: Dispatch<SetStateAction<Calendar[]>>;
     checkedCalendars: string[];
-    setCheckedCalendars: React.Dispatch<React.SetStateAction<string[]>>;
-} | null>(null);
+    setCheckedCalendars: Dispatch<SetStateAction<string[]>>;
+}
+
+export const Context = createContext<CalendarContext | null>(null);

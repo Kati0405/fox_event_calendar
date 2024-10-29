@@ -1,3 +1,4 @@
+import { cn } from '@/utils/utils';
 import styled from 'styled-components';
 
 export interface ColorPickerProps {
@@ -35,13 +36,11 @@ const ColorSwatchWrapper = styled.div<{ isSelected: boolean }>`
     isSelected ? '1px solid #323749' : '1px solid transparent'};
 `;
 
-const ColorSwatch = styled.div<{ color: string }>`
+const ColorSwatch = styled.div`
   width: 0.75rem;
   height: 0.75rem;
-  border-radius: 0.5rem;
-  background-color: ${({ color }) => color};
-  cursor: pointer;
   border-radius: 15%;
+  cursor: pointer;
 `;
 
 const ColorPicker: React.FC<ColorPickerProps> = ({
@@ -54,10 +53,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       <Title>Colour</Title>
       <Palette>
         {colors.map((color) => (
-          <ColorSwatchWrapper isSelected={color === selectedColor}>
+          <ColorSwatchWrapper key={color} isSelected={color === selectedColor}>
             <ColorSwatch
-              key={color}
-              color={color}
+              className={cn(`bg-${color}`)}
               role='button'
               onClick={() => onChange(color)}
               data-testid={`color-swatch-${color}`}

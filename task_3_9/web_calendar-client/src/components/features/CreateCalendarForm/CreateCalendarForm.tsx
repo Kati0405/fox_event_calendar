@@ -6,23 +6,37 @@ import Icon from '@components/ui/Icon';
 import Input from '@components/ui/Input';
 import Button from '@components/ui/Button';
 import ColorPicker from '@components/ui/ColorPicker';
-import { colors } from '@/constants/constants';
 
-interface CreateCalendarFromProps {
+const colors = [
+  'rosePink',
+  'deepPink',
+  'sunsetOrange',
+  'goldenYellow',
+  'limeGreen',
+  'emeraldGreen',
+  'tealGreen',
+  'forestGreen',
+  'skyBlue',
+  'royalBlue',
+  'lavenderBlue',
+  'plumPurple',
+];
+
+export interface CreateCalendarFromProps {
   onAddCalendar: (newCalendar: {
     id: string;
     title: string;
-    color: string;
+    colorClass: string;
   }) => void;
   onEditCalendar?: (updatedCalendar: {
     id: string;
     title: string;
-    color: string;
+    colorClass: string;
   }) => void;
-  calendarToEdit?: { id: string; title: string; color: string } | null;
+  calendarToEdit?: { id: string; title: string; colorClass: string } | null;
 }
 
-export const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
+const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
   onAddCalendar,
   onEditCalendar,
   calendarToEdit,
@@ -33,7 +47,7 @@ export const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
   useEffect(() => {
     if (calendarToEdit) {
       setTitle(calendarToEdit.title);
-      setSelectedColor(calendarToEdit.color);
+      setSelectedColor(calendarToEdit.colorClass);
     }
   }, [calendarToEdit]);
 
@@ -47,7 +61,7 @@ export const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
       const updatedCalendar = {
         id: calendarToEdit.id,
         title: title,
-        color: selectedColor,
+        colorClass: selectedColor,
       };
       if (onEditCalendar) {
         onEditCalendar(updatedCalendar);
@@ -56,7 +70,7 @@ export const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
       const newCalendar = {
         id: uuidv4(),
         title: title,
-        color: selectedColor,
+        colorClass: selectedColor,
       };
       onAddCalendar(newCalendar);
     }
@@ -90,3 +104,5 @@ export const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
     </form>
   );
 };
+
+export default CreateCalendarForm;

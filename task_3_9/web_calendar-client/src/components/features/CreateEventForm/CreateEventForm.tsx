@@ -8,11 +8,13 @@ import Button from '@components/ui/Button';
 import DatePickerComponent from '@components/ui/DatePicker';
 import Icon from '@components/ui/Icon';
 import Input from '@components/ui/Input';
-import TimePickerComponent from '../TimePicker/TimePicker';
+import TimePickerComponent from '../TimePicker';
 import { Context } from '@/context/context';
 import { Calendar, Event } from '@/types/types';
+import CheckboxWithLabel from '@/components/ui/CheckboxLabeled/CheckboxLabeled';
+import { RepeatOptions } from '@/constants/constants';
 
-interface CreateEventFormProps {
+export interface CreateEventFormProps {
   closeModal: () => void;
   initialDate?: Date | null;
   event?: Event;
@@ -36,6 +38,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
   const [isAllDay, setIsAllDay] = useState(false);
+  const [repeatOption, setRepeatOption] = useState<RepeatOptions>(
+    RepeatOptions.DOES_NOT_REPEAT
+  );
 
   useEffect(() => {
     if (initialDate) {
@@ -46,28 +51,11 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       setEventDate(event.date);
       setCalendar(event.calendarId);
       setDescription(event.description);
-      setStartTime(event.start_time);
-      setEndTime(event.end_time);
+      setStartTime(new Date(event.start_time));
+      setEndTime(new Date(event.end_time));
+      setIsAllDay(event.isAllDay || false);
     }
   }, [initialDate, event]);
-
-  useEffect(() => {
-    if (event) {
-      setTitle(event.title);
-      setEventDate(event.date);
-      setCalendar(event.calendarId);
-      setDescription(event.description);
-      setStartTime(event.start_time);
-      setEndTime(event.end_time);
-    } else {
-      setTitle('');
-      setEventDate(null);
-      setCalendar('');
-      setDescription('');
-      setStartTime(null);
-      setEndTime(null);
-    }
-  }, [event]);
 
   const handleEventDateChange = (date: Date | null) => {
     setEventDate(date);
@@ -78,6 +66,21 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setEndTime(end);
   };
 
+  const handleAllDayChange = () => {
+    setIsAllDay(!isAllDay);
+    if (!isAllDay) {
+      setStartTime(new Date(eventDate!.setHours(0, 0, 0, 0)));
+      setEndTime(new Date(eventDate!.setHours(23, 59, 0, 0)));
+    } else {
+      setStartTime(null);
+      setEndTime(null);
+    }
+  };
+
+  const handleRepeatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setRepeatOption(e.target.value as RepeatOptions);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -86,7 +89,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       return;
     }
 
-    if (startTime >= endTime) {
+    if (!isAllDay && startTime >= endTime) {
       alert('Start time must be before end time.');
       return;
     }
@@ -97,6 +100,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const end = new Date(eventDate);
     end.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
 
+    if (!isAllDay) {
+      start.setHours(startTime!.getHours(), startTime!.getMinutes(), 0, 0);
+      end.setHours(endTime!.getHours(), endTime!.getMinutes(), 0, 0);
+    } else {
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 0, 0);
+    }
+
     const newEvent = {
       id: event ? event.id : uuidv4(),
       date: eventDate,
@@ -105,13 +116,16 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       title: title,
       description: description,
       calendarId: calendar,
+      isAllDay: isAllDay,
+      repeat: repeatOption,
     };
+
     if (onEditEvent) {
       onEditEvent(newEvent);
     } else {
       setEvents((prevEvents: Event[]) => [...prevEvents, newEvent]);
     }
-
+    console.log(newEvent);
     closeModal();
   };
 
@@ -130,29 +144,27 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         <Icon icon={IoMdTime}></Icon>
         <div className='select-date flex'>
           <DatePickerComponent onDateChange={handleEventDateChange} />
-          <TimePickerComponent onTimeChange={handleTimeChange} />
+          {!isAllDay && <TimePickerComponent onTimeChange={handleTimeChange} />}
         </div>
       </div>
       <div className='flex flex-row mt-3 mb-3 ml-6'>
-        <label htmlFor='all_day' className='mt-3 mr-3'>
-          <input
-            type='checkbox'
-            name='all_day'
-            checked={isAllDay}
-            onChange={() => setIsAllDay(!isAllDay)}
-          ></input>
-          All day
-        </label>
+        <CheckboxWithLabel
+          label={'All day'}
+          checked={isAllDay}
+          onChange={handleAllDayChange}
+          className='green' //change to something
+        ></CheckboxWithLabel>
         <select
           name='repeat'
           id='repeat'
           className='border-b-2 border-black p-2 focus:outline-none'
+          onChange={handleRepeatChange}
         >
-          <option value='Does not repeat'>Does not repeat</option>
-          <option value='Daily'>Daily</option>
-          <option value='Weekly'>Weekly</option>
-          <option value='Monthly'>Monthly</option>
-          <option value='Annually'>Annually</option>
+          {Object.values(RepeatOptions).map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
       </div>
       <div className='flex flex-row gap-3'>
@@ -163,6 +175,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           onChange={(e) => setCalendar(e.target.value)}
           className='border-b-2 border-black pb-2 w-full focus:outline-none mb-3'
         >
+          <option value='' disabled selected>
+            Choose a calendar
+          </option>
           {calendars.map((cal: Calendar) => (
             <option key={cal.id} value={cal.id}>
               {cal.title}

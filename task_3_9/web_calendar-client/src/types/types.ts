@@ -12,12 +12,13 @@ export type Event = {
     end_time: Date;
     description: string;
     calendarId: string;
+    isAllDay?: boolean
 };
 
 export type Calendar = {
     id: string;
     title: string;
-    color: string;
+    colorClass: string;
     isDefault?: boolean
 }
 

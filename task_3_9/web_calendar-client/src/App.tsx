@@ -2,33 +2,34 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import dayjs from 'dayjs';
 
-import LoginPage from './pages/LoginPage/LoginPage';
-import MainPage from './pages/MainPage/MainPage';
+import LoginPage from '@/pages/LoginPage';
+import MainPage from '@/pages/MainPage';
 import { Calendar, Event, User } from '@/types/types';
 import { getWeek } from '@/utils/utils';
 import { Day as DayType } from '@/types/types';
 import { Context } from '@/context/context';
+import {
+  events as initialEvents,
+  calendars as initialCalendars,
+  dateFormat,
+  defaultCheckedCalendarsId,
+} from '@/constants/constants';
 
 import './styles/global.css';
 
-import { events as initialEvents } from './constants/constants';
-import { calendars as initialCalendars } from './constants/constants';
-
 const App: React.FC = () => {
-  const initialDate = dayjs().format('YYYY-MM-DD');
+  const initialDate = dayjs().format(dateFormat);
   const [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<Event[]>(initialEvents);
   const [calendars, setCalendars] = useState<Calendar[]>(initialCalendars);
-  const [checkedCalendars, setCheckedCalendars] = useState<string[]>([
-    '0',
-    '1',
-    '2',
-  ]);
+  const [checkedCalendars, setCheckedCalendars] = useState<string[]>(
+    defaultCheckedCalendarsId
+  );
   const [currentDay, setCurrentDay] = useState<DayType>({
     date: dayjs().toDate(),
     events:
       events.filter(
-        (event) => dayjs(event.start_time).format('YYYY-MM-DD') === initialDate
+        (event) => dayjs(event.start_time).format(dateFormat) === initialDate
       ) || [],
   });
   const [currentWeek, setCurrentWeek] = useState<DayType[]>(

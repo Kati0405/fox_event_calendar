@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 
-import { Day as DayType } from '../../../types/types';
+import { Day as DayType } from '@/types/types';
+import AllDayEvent from '../AllDayEvent';
 
-export const WeekDayLabel: React.FC<DayType> = ({ date }) => {
+const WeekDayLabel: React.FC<DayType> = ({ date }) => {
   const formattedDate = dayjs(date).format('YYYY-MM-DD');
   const [day, dayOfWeek] = dayjs(date).format('DD ddd').split(' ');
   const today = dayjs().format('YYYY-MM-DD');
   const isToday = today === formattedDate;
+
   return (
     <div className='flex flex-col flex-1 border-l p-1 border-b'>
       <div
@@ -17,6 +19,8 @@ export const WeekDayLabel: React.FC<DayType> = ({ date }) => {
         <span className='text-lg font-bold'>{day}</span>
         <span className='text-sm'>{dayOfWeek.toUpperCase()}</span>
       </div>
+      <AllDayEvent formattedDate={formattedDate} />
     </div>
   );
 };
+export default WeekDayLabel;

@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import { ReactSVG } from 'react-svg';
 
 import checkmark from '@/assets/svg/checkmark.svg';
-import { theme } from '@/theme';
+import { cn } from '@/utils/utils';
 
 export interface CheckboxProps {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
   ariaLabel?: string;
-  color?: string;
+  className?: string;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -19,7 +19,6 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 const StyledCheckbox = styled.div<{
   checked: boolean;
   disabled: boolean;
-  color?: string;
 }>`
   display: flex;
   align-items: center;
@@ -27,42 +26,15 @@ const StyledCheckbox = styled.div<{
   width: 1rem;
   height: 1rem;
   border-radius: 0.2rem;
-  border: 3px solid ${({ color }) => color || '#323749'};
-  background-color: white;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: background-color 0.2s, border-color 0.2s;
-
-  ${({ checked, color }) =>
-    checked &&
-    `
-    background-color: ${color || theme.colors.color_primary};
-    border-color: ${color || theme.colors.color_primary};
-  `}
 
   ${({ disabled }) =>
     disabled &&
     `
-    background-color: #e0e0e0;
-    border-color: #e0e0e0;
-    cursor: not-allowed;
-  `}
-
-  &:hover {
-    ${({ disabled, color }) =>
-      !disabled &&
-      `
-      border-color: ${color || theme.colors.border_color};
+      background-color: #e0e0e0;
+      border-color: #e0e0e0;
     `}
-  }
-
-  &:active {
-    ${({ disabled, color }) =>
-      !disabled &&
-      `
-      background-color: ${color || theme.colors.color_secondary};
-      border-color: ${color || theme.colors.border_color};
-    `}
-  }
 `;
 
 const CheckboxContainer = styled.label`
@@ -74,25 +46,32 @@ const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   disabled = false,
   ariaLabel,
-  color,
-}) => (
-  <CheckboxContainer>
-    <HiddenCheckbox
-      checked={checked}
-      onChange={(e) => onChange?.(e.target.checked)}
-      disabled={disabled}
-      aria-label={ariaLabel}
-    />
-    <StyledCheckbox
-      checked={checked}
-      disabled={disabled}
-      role='checkbox'
-      aria-label={ariaLabel}
-      color={color}
-    >
-      {checked && <ReactSVG src={checkmark} role='img' />}
-    </StyledCheckbox>
-  </CheckboxContainer>
-);
+  className,
+}) => {
+  const combinedClassName = `${
+    checked
+      ? `${cn(`bg-${className}`)} checked`
+      : `${cn(`border-${className}`)} border-2`
+  }`;
+  return (
+    <CheckboxContainer>
+      <HiddenCheckbox
+        checked={checked}
+        onChange={(e) => onChange?.(e.target.checked)}
+        disabled={disabled}
+        aria-label={ariaLabel}
+      />
+      <StyledCheckbox
+        checked={checked}
+        disabled={disabled}
+        role='checkbox'
+        aria-label={ariaLabel}
+        className={combinedClassName}
+      >
+        {checked && <ReactSVG src={checkmark} role='img' />}
+      </StyledCheckbox>
+    </CheckboxContainer>
+  );
+};
 
 export default Checkbox;

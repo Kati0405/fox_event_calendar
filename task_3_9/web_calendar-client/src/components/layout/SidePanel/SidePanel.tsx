@@ -3,10 +3,10 @@ import Button from '@components/ui/Button';
 import Calendar from '@components/features/Calendar/Calendar';
 import Modal from '@components/ui/Modal';
 import './SidePanel.css';
-import CreateEventForm from '@components/features/CreateEventForm/CreateEventForm';
-import { MyCalendars } from '@components/features/MyCalendars/MyCalendars';
+import CreateEventForm from '@components/features/CreateEventForm';
+import MyCalendars from '@components/features/MyCalendars';
 
-export const SidePanel = () => {
+const SidePanel = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -46,3 +46,4 @@ export const SidePanel = () => {
     </aside>
   );
 };
+export default SidePanel;

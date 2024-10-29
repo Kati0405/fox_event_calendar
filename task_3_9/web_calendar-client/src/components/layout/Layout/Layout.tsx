@@ -1,13 +1,13 @@
-import { Header } from '../Header/Header';
-import { Calendar, Event, User } from '../../../types/types';
-import { SidePanel } from '../SidePanel/SidePanel';
-import { Week } from '../../features/Week/Week';
-import { Day as DayType } from '../../../types/types';
 import { useContext } from 'react';
-import { Context } from '../../../context/context';
-import { Day as DayComponent } from '../../features/Day/Day';
+import Header from '../Header';
+import { Calendar, Event, User } from '@/types/types';
+import SidePanel from '../SidePanel';
+import Week from '@components/features/Week';
+import { Day as DayType } from '@/types/types';
+import { Context } from '@/context/context';
+import DayComponent from '@components/features/Day';
 
-interface LayoutProps {
+export interface LayoutProps {
   user: User | null;
   setUser: (user: User | null) => void;
   week: DayType[];
@@ -16,7 +16,7 @@ interface LayoutProps {
   calendars: Calendar[];
 }
 
-export const Layout: React.FC<LayoutProps> = ({
+const Layout: React.FC<LayoutProps> = ({
   user,
   setUser,
   week,
@@ -41,3 +41,5 @@ export const Layout: React.FC<LayoutProps> = ({
     </>
   );
 };
+
+export default Layout;

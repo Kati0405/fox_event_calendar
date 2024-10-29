@@ -1,13 +1,14 @@
 import { startOfDay, differenceInMinutes, format } from 'date-fns';
-import { Event } from '../../../types/types';
+import { Event } from '@/types/types';
 import { useContext, useState } from 'react';
-import { Context } from '../../../context/context';
-import Modal from '../../ui/Modal/Modal';
-import { EventInfo } from '../../features/EventInfo/EventInfo';
+import { Context } from '@/context/context';
+import Modal from '@components/ui/Modal';
+import EventInfo from '@components/features/EventInfo';
+import { cn } from '@/utils/utils';
 
 const minutes_in_day = 24 * 60;
 
-interface DayEvent {
+export interface DayEvent {
   day: Date;
   event: Event;
   index: number;
@@ -15,7 +16,7 @@ interface DayEvent {
   containerHeight: number;
 }
 
-export const DayEvent: React.FC<DayEvent> = ({
+const DayEvent: React.FC<DayEvent> = ({
   day,
   event,
   index,
@@ -32,7 +33,7 @@ export const DayEvent: React.FC<DayEvent> = ({
   const calendar = calendars.find(
     (calendar) => calendar.id === event.calendarId
   );
-  const eventColor = calendar ? calendar.color : 'green';
+  const eventColor = calendar ? calendar.colorClass : 'green';
 
   const isVisible = checkedCalendars.includes(event.calendarId);
 
@@ -70,7 +71,6 @@ export const DayEvent: React.FC<DayEvent> = ({
           ? `calc((100% - 96px) * ${widthPercentage})`
           : `100% * ${widthPercentage}`
       }`,
-      backgroundColor: isHovered ? `${eventColor}c5` : `${eventColor}4d`,
     };
 
     if (isLast) {
@@ -98,7 +98,12 @@ export const DayEvent: React.FC<DayEvent> = ({
     >
       <div
         style={generateBoxStyle()}
-        className='bg-[#EEC04C4D] border border-white rounded cursor-pointer absolute'
+        className={cn(
+          `border border-white rounded cursor-pointer absolute transition-opacity`,
+          isHovered
+            ? `bg-${eventColor} bg-opacity-100`
+            : `bg-${eventColor} bg-opacity-50`
+        )}
       >
         <h1 className='text-xs'>
           {`${event.title}, 
@@ -116,3 +121,5 @@ export const DayEvent: React.FC<DayEvent> = ({
     </div>
   );
 };
+
+export default DayEvent;

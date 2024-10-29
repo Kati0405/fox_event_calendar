@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './custom-datepicker.css';
 
-interface TimePickerComponentProps {
+export interface TimePickerComponentProps {
   onTimeChange: (start: Date | null, end: Date | null) => void;
 }
 

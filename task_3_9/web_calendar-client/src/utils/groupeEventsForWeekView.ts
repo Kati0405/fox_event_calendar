@@ -21,7 +21,7 @@ export const createGroups = (
     const group = [first, ...eventsInRange];
 
     const remainingEvents = rest.filter(
-        (event) => !eventsInRange.includes(event)
+        (event) => !eventsInRange.includes(event) && !event.isAllDay
     );
 
     groupedEvents.push(group);

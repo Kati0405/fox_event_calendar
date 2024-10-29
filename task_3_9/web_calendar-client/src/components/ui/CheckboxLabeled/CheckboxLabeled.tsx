@@ -22,7 +22,7 @@ const CheckboxWithLabel: React.FC<CheckboxLabeledProps> = ({
   label,
   onChange,
   disabled = false,
-  color,
+  className,
 }) => {
   return (
     <LabelContainer>
@@ -30,7 +30,7 @@ const CheckboxWithLabel: React.FC<CheckboxLabeledProps> = ({
         checked={checked}
         onChange={onChange}
         disabled={disabled}
-        color={color}
+        className={className}
       />
       <LabelText>{label}</LabelText>
     </LabelContainer>

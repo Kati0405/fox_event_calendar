@@ -1,17 +1,17 @@
 import { cn } from '@/utils/utils';
 import { endOfDay, startOfDay, eachHourOfInterval, isSameDay } from 'date-fns';
 import { Event } from '@/types/types';
-import { DayEvent } from '@components/features/DayEvent/DayEvent';
+import DayEvent from '@components/features/DayEvent';
 import { useContext, useState } from 'react';
 import { Context } from '@/context/context';
 import { createGroups } from '@/utils/groupeEventsForWeekView';
 
-type WeekDayProps = {
+export type WeekDayProps = {
   day: Date;
   events?: Event[];
 };
 
-export const WeekDay: React.FC<WeekDayProps> = ({ day }) => {
+const WeekDay: React.FC<WeekDayProps> = ({ day }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
   const { events } = useContext(Context)!;
 
@@ -59,3 +59,4 @@ export const WeekDay: React.FC<WeekDayProps> = ({ day }) => {
     </div>
   );
 };
+export default WeekDay;

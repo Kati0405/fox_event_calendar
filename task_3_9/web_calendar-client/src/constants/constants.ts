@@ -1,28 +1,38 @@
 import { Calendar, Event } from "../types/types";
 import { add, addDays, startOfToday, subDays } from "date-fns";
 
-export const colors = [
-    '#9F2957', '#D90056', '#E25D33', '#DFC45A', '#B8C42F', '#16AF6E', '#429488', '#397E49', '#439BDF', '#4254AF', '#6C7AC4', '#8332A4'
-]
+export const dateFormat = 'YYYY-MM-DD'
+
 
 export const calendars: Calendar[] = [
     {
         id: '0',
         title: 'Default Calendar',
-        color: '#DFC45A',
+        colorClass: 'goldenYellow',
         isDefault: true
     },
     {
         id: '1',
         title: 'Calendar 1',
-        color: '#429488',
+        colorClass: 'tealGreen',
     },
     {
         id: '2',
         title: 'Calendar 2',
-        color: '#6C7AC4',
+        colorClass: 'skyBlue',
     },
 ]
+
+export const defaultCheckedCalendarsId = ['0', '1', '2']
+
+export enum RepeatOptions {
+    DOES_NOT_REPEAT = 'Does not repeat',
+    DAILY = 'Daily',
+    WEEKLY = 'Weekly',
+    MONTHLY = 'Monthly',
+    ANNUALLY = 'Annually',
+}
+
 
 export const events: Event[] = [
     {
@@ -123,5 +133,15 @@ export const events: Event[] = [
         title: "3 Days Ago Event",
         description: "This is the description for 3 Days Ago Event.",
         calendarId: "2",
+    },
+    {
+        id: "11",
+        date: subDays(startOfToday(), 1),
+        start_time: add(subDays(startOfToday(), 1), { hours: 0, minutes: 0 }),
+        end_time: add(subDays(startOfToday(), 1), { hours: 23, minutes: 59 }),
+        title: "All Day Event",
+        description: "This is the description for All Day Event.",
+        calendarId: "2",
+        isAllDay: true
     },
 ];

@@ -21,7 +21,7 @@ export interface HeaderProps {
   setUser: (user: User | null) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
+const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
   const {
     setCurrentMonth,
     currentWeek,
@@ -161,3 +161,5 @@ export const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
     </header>
   );
 };
+
+export default Header;

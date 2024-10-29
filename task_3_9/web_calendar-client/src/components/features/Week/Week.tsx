@@ -8,21 +8,21 @@ import {
   isSameDay,
 } from 'date-fns';
 import { Event, Day as DayType } from '@/types/types';
-import { WeekDayLabel } from '../WeekDayLabel/WeekDayLabel';
-import { WeekDay } from '../WeekDay/WeekDay';
+import WeekDayLabel from '../WeekDayLabel';
+import WeekDay from '../WeekDay';
 
 import { Context } from '@/context/context';
-import { TimeLine } from '@components/features/TimeLine/TimeLine';
+import TimeLine from '@components/features/TimeLine';
 import { createGroups } from '@/utils/groupeEventsForWeekView';
 
 export type Week = DayType[];
 
-interface WeekProps {
+export interface WeekProps {
   date: Date;
   events?: Event[];
 }
 
-export const Week: React.FC<WeekProps> = () => {
+const Week: React.FC<WeekProps> = () => {
   const { events, currentWeek } = useContext(Context)!;
 
   const hours = eachHourOfInterval({
@@ -52,6 +52,7 @@ export const Week: React.FC<WeekProps> = () => {
               <WeekDayLabel
                 date={day.date}
                 key={'week-day-label-' + day.date.toISOString()}
+                events={events}
               />
             ))}
           </div>
@@ -92,3 +93,5 @@ export const Week: React.FC<WeekProps> = () => {
     </section>
   );
 };
+
+export default Week;

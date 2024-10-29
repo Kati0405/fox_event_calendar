@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 
 import { Calendar, Event, User } from '@/types/types';
-import { Layout } from '@/components/layout/Layout/Layout';
+import Layout from '@components/layout/Layout';
 import { Day as DayType } from '@/types/types';
 import { Context } from '@/context/context';
 
-interface MainPageProps {
+export interface MainPageProps {
   user: User | null;
   setUser: (user: User | null) => void;
   week: DayType[];

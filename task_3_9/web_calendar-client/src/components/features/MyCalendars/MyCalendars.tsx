@@ -7,13 +7,13 @@ import { RiDeleteBin7Fill } from 'react-icons/ri';
 import Modal from '@components/ui/Modal';
 import CheckboxWithLabel from '@components/ui/CheckboxLabeled';
 import Icon from '@components/ui/Icon';
-import { CreateCalendarForm } from '../CreateCalendarForm/CreateCalendarForm';
+import CreateCalendarForm from '../CreateCalendarForm';
 import { calendars as initialCalendars } from '@/constants/constants';
 import { Calendar, Event } from '@/types/types';
 import { Context } from '@/context/context';
 import Button from '@components/ui/Button';
 
-export const MyCalendars = () => {
+const MyCalendars = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [calendarToDelete, setCalendarToDelete] = useState<Calendar | null>(
@@ -94,7 +94,7 @@ export const MyCalendars = () => {
   return (
     <div className='mt-4 bg-white rounded-lg p-2 shadow-md'>
       <div className='my-calendars_header flex flex-row justify-between'>
-        <p className='text-black font-bold'>My calendars</p>
+        <p className='text-black font-bold '>My calendars</p>
         <div className='cursor-pointer' onClick={handleOpenModal}>
           <Icon icon={FaPlus}></Icon>
         </div>
@@ -111,7 +111,7 @@ export const MyCalendars = () => {
               label={calendar.title}
               checked={checkedCalendars.includes(calendar.id)}
               onChange={() => handleCheckboxChange(calendar.id)}
-              color={calendar.color}
+              className={calendar.colorClass}
             />
             {hoveredCalendar === calendar.id && (
               <div className='flex gap-3 self-end'>
@@ -164,3 +164,5 @@ export const MyCalendars = () => {
     </div>
   );
 };
+
+export default MyCalendars;

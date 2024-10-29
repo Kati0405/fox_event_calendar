@@ -33,7 +33,7 @@ const createGroups = (
 
 export const groupEvents = (date: Date, events: Event[]): GroupedEvents => {
     const eventsToday = events.filter(
-        (event) => isSameDay(event.start_time, date)
+        (event) => isSameDay(event.start_time, date) && !event.isAllDay
     );
 
     const sortedEvents = eventsToday.sort(

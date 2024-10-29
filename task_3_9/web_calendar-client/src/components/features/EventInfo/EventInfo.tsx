@@ -11,12 +11,13 @@ import { Context } from '@/context/context';
 import Modal from '@components/ui/Modal';
 import CreateEventForm from '../CreateEventForm/CreateEventForm';
 import Button from '@components/ui/Button';
+import { cn, getCalendarColor } from '@/utils/utils';
 
-interface EventInfoProps {
+export interface EventInfoProps {
   event: Event;
 }
 
-export const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
+const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
   const { calendars, setEvents } = useContext(Context)!;
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -46,7 +47,7 @@ export const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
 
   return (
     <div className='event-info relative'>
-      <div className='event-info_actions flex flex-row absolute gap-3 right-8 top-[-3.2rem]'>
+      <div className='event-info_actions flex flex-row absolute gap-4 right-8 top-[-3.2rem]'>
         <div
           className='cursor-pointer'
           onClick={() => {
@@ -64,10 +65,6 @@ export const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
         >
           <Icon icon={RiDeleteBin7Fill}></Icon>
         </div>
-      </div>
-      <div className='flex flex-row gap-3'>
-        <Icon icon={MdTitle}></Icon>
-        {event.title}
       </div>
 
       {isEditModalOpen && (
@@ -107,23 +104,34 @@ export const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
           onClose={() => setIsDeleteModalOpen(false)}
         />
       )}
-
-      <div className='flex flex-row gap-3'>
-        <Icon icon={IoMdTime}></Icon>
-        {`${format(event.date, 'EEEE, MMMM d')}, ${format(
-          event.start_time,
-          'H:mm aaa'
-        )} - ${format(event.end_time, 'H:mm aaa')}`}
-      </div>
-      <div className='flex flex-row gap-3'>
-        <Icon icon={IoCalendarOutline}></Icon>
-
-        {findCalendarTitleById(event.calendarId)}
-      </div>
-      <div className='flex flex-row gap-3'>
-        <Icon icon={MdOutlineSubject}></Icon>
-        {event.description}
+      <div className='flex flex-col gap-3'>
+        <div className='flex flex-row gap-3'>
+          <Icon icon={MdTitle}></Icon>
+          <h1 className='text-2xl'>{event.title}</h1>
+        </div>
+        <div className='flex flex-row gap-3'>
+          <Icon icon={IoMdTime}></Icon>
+          {`${format(event.date, 'EEEE, MMMM d')}, ${format(
+            event.start_time,
+            'H:mm aaa'
+          )} - ${format(event.end_time, 'H:mm aaa')}`}
+        </div>
+        <div className='flex flex-row gap-3 items-center'>
+          <Icon icon={IoCalendarOutline}></Icon>
+          <div
+            className={`w-4 h-4 rounded-md ${cn(
+              `bg-${getCalendarColor(calendars, event.calendarId)}`
+            )}`}
+          ></div>
+          {findCalendarTitleById(event.calendarId)}
+        </div>
+        <div className='flex flex-row gap-3'>
+          <Icon icon={MdOutlineSubject}></Icon>
+          {event.description}
+        </div>
       </div>
     </div>
   );
 };
+
+export default EventInfo;

@@ -1,4 +1,4 @@
-import { Day as DayType } from '../../../types/types';
+import { useContext, useState } from 'react';
 import {
   format,
   endOfDay,
@@ -6,14 +6,16 @@ import {
   eachHourOfInterval,
   isToday,
 } from 'date-fns';
-import { WeekDayLabel } from '../WeekDayLabel/WeekDayLabel';
-import { TimeLine } from '@components/features/TimeLine/TimeLine';
-import { groupEvents } from '../../../utils/groupeEventsForDayView';
-import { DayEvent } from '../DayEvent/DayEvent';
-import { useContext, useState } from 'react';
-import { Context } from '../../../context/context';
 
-export const Day: React.FC<DayType> = ({ date }) => {
+import { Day as DayType } from '@/types/types';
+import WeekDayLabel from '../WeekDayLabel';
+import TimeLine from '@components/features/TimeLine';
+import { groupEvents } from '@/utils/groupeEventsForDayView';
+import DayEvent from '../DayEvent';
+import { Context } from '@/context/context';
+import { dateFormat } from '@/constants/constants';
+
+const Day: React.FC<DayType> = ({ date }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
   const { events } = useContext(Context)!;
 
@@ -30,7 +32,7 @@ export const Day: React.FC<DayType> = ({ date }) => {
     <div className='flex flex-col w-3/4 bg-white rounded-lg'>
       <div className='border-b flex'>
         <div className='w-20 h-20'></div>
-        <WeekDayLabel date={date} />
+        <WeekDayLabel date={date} events={events} />
       </div>
       <div className='flex-1 max-h-full pb-28'>
         <div className='relative' ref={(ref) => setRef(ref)}>
@@ -52,7 +54,7 @@ export const Day: React.FC<DayType> = ({ date }) => {
               <div className='h-full w-20 flex items-start justify-center'>
                 <time
                   className='text-xs -m-3 select-none'
-                  dateTime={format(time, 'yyyy-MM-dd')}
+                  dateTime={format(time, dateFormat)}
                 >
                   {index === 0 ? '' : format(time, 'h a').toLowerCase()}
                 </time>
@@ -65,3 +67,5 @@ export const Day: React.FC<DayType> = ({ date }) => {
     </div>
   );
 };
+
+export default Day;

@@ -6,11 +6,11 @@ import { Context } from '@/context/context';
 const one_minute = 60 * 1000;
 const minutes_in_day = 24 * 60;
 
-interface TimeLineProps {
+export interface TimeLineProps {
   containerHeight: number;
 }
 
-export const TimeLine: React.FC<TimeLineProps> = ({ containerHeight }) => {
+const TimeLine: React.FC<TimeLineProps> = ({ containerHeight }) => {
   const [top, setTop] = useState(0);
   const today = new Date();
   const startOfToday = startOfDay(today);
@@ -52,3 +52,5 @@ export const TimeLine: React.FC<TimeLineProps> = ({ containerHeight }) => {
     </div>
   );
 };
+
+export default TimeLine;
