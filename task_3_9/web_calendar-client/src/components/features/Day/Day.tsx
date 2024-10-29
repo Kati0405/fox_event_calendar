@@ -13,7 +13,6 @@ import TimeLine from '@components/features/TimeLine';
 import { groupEvents } from '@/utils/groupeEventsForDayView';
 import DayEvent from '../DayEvent';
 import { Context } from '@/context/context';
-import { dateFormat } from '@/constants/constants';
 
 const Day: React.FC<DayType> = ({ date }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
@@ -54,7 +53,7 @@ const Day: React.FC<DayType> = ({ date }) => {
               <div className='h-full w-20 flex items-start justify-center'>
                 <time
                   className='text-xs -m-3 select-none'
-                  dateTime={format(time, dateFormat)}
+                  dateTime={format(time, 'yyyy-MM-dd')}
                 >
                   {index === 0 ? '' : format(time, 'h a').toLowerCase()}
                 </time>
