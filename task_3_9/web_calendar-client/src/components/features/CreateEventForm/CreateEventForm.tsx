@@ -4,15 +4,15 @@ import { MdTitle, MdOutlineSubject } from 'react-icons/md';
 import { IoMdTime } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
 
-import Button from '@components/ui/Button';
-import DatePickerComponent from '@components/ui/DatePicker';
-import Icon from '@components/ui/Icon';
-import Input from '@components/ui/Input';
+import Button from 'src/components/ui/Button';
+import DatePickerComponent from 'src/components/ui/DatePicker';
+import Icon from 'src/components/ui/Icon';
+import Input from 'src/components/ui/Input';
 import TimePickerComponent from '../TimePicker';
-import { Context } from '@/context/context';
-import { Calendar, Event } from '@/types/types';
-import CheckboxWithLabel from '@/components/ui/CheckboxLabeled/CheckboxLabeled';
-import { RepeatOptions } from '@/constants/constants';
+import { Context } from 'src/context/context';
+import { Calendar, Event } from 'src/types/types';
+import CheckboxWithLabel from 'src/components/ui/CheckboxLabeled/CheckboxLabeled';
+import { RepeatOptions } from 'src/constants/constants';
 
 export interface CreateEventFormProps {
   closeModal: () => void;
@@ -33,7 +33,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [eventDate, setEventDate] = useState<Date | null>(
     initialDate ? new Date(initialDate) : null
   );
-  const [calendar, setCalendar] = useState('');
+  const [calendar, setCalendar] = useState(calendars[0]?.id || '');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
@@ -152,7 +152,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           label={'All day'}
           checked={isAllDay}
           onChange={handleAllDayChange}
-          className='green' //change to something
         ></CheckboxWithLabel>
         <select
           name='repeat'
@@ -175,9 +174,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           onChange={(e) => setCalendar(e.target.value)}
           className='border-b-2 border-black pb-2 w-full focus:outline-none mb-3'
         >
-          <option value='' disabled selected>
-            Choose a calendar
-          </option>
           {calendars.map((cal: Calendar) => (
             <option key={cal.id} value={cal.id}>
               {cal.title}

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Button from '@components/ui/Button';
-import Calendar from '@components/features/Calendar/Calendar';
-import Modal from '@components/ui/Modal';
-import './SidePanel.css';
-import CreateEventForm from '@components/features/CreateEventForm';
-import MyCalendars from '@components/features/MyCalendars';
+
+import Button from 'src/components/ui/Button';
+import Calendar from 'src/components/features/Calendar';
+import Modal from 'src/components/ui/Modal';
+import CreateEventForm from 'src/components/features/CreateEventForm';
+import MyCalendars from 'src/components/features/MyCalendars';
 
 const SidePanel = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +25,7 @@ const SidePanel = () => {
   };
 
   return (
-    <aside className='side-panel'>
+    <aside className='side-panel w-60 ml-14'>
       <Button className='w-60' onClick={handleOpenModal}>
         + Create
       </Button>

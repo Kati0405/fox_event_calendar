@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { startOfDay, differenceInMinutes } from 'date-fns';
 
-import { Context } from '@/context/context';
+import { Context } from 'src/context/context';
 
 const one_minute = 60 * 1000;
 const minutes_in_day = 24 * 60;

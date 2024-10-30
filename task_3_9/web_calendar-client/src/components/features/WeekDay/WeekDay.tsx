@@ -1,10 +1,11 @@
-import { cn } from '@/utils/utils';
-import { endOfDay, startOfDay, eachHourOfInterval, isSameDay } from 'date-fns';
-import { Event } from '@/types/types';
-import DayEvent from '@components/features/DayEvent';
 import { useContext, useState } from 'react';
-import { Context } from '@/context/context';
-import { createGroups } from '@/utils/groupeEventsForWeekView';
+import { endOfDay, startOfDay, eachHourOfInterval, isSameDay } from 'date-fns';
+
+import { cn } from 'src/utils/utils';
+import { Event } from 'src/types/types';
+import DayEvent from 'src/components/features/DayEvent';
+import { Context } from 'src/context/context';
+import { createGroups } from 'src/utils/groupeEventsForWeekView';
 
 export type WeekDayProps = {
   day: Date;

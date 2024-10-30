@@ -4,14 +4,14 @@ import { FaPlus } from 'react-icons/fa';
 import { MdModeEditOutline } from 'react-icons/md';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 
-import Modal from '@components/ui/Modal';
-import CheckboxWithLabel from '@components/ui/CheckboxLabeled';
-import Icon from '@components/ui/Icon';
-import CreateCalendarForm from '../CreateCalendarForm';
-import { calendars as initialCalendars } from '@/constants/constants';
-import { Calendar, Event } from '@/types/types';
-import { Context } from '@/context/context';
-import Button from '@components/ui/Button';
+import Modal from 'src/components/ui/Modal';
+import CheckboxWithLabel from 'src/components/ui/CheckboxLabeled';
+import Icon from 'src/components/ui/Icon';
+import CreateCalendarForm from 'src/components/features/CreateCalendarForm';
+import { calendars as initialCalendars } from 'src/constants/constants';
+import { Calendar, Event } from 'src/types/types';
+import { Context } from 'src/context/context';
+import Button from 'src/components/ui/Button';
 
 const MyCalendars = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

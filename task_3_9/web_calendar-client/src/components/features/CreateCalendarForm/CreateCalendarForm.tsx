@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { MdTitle, MdOutlinePalette } from 'react-icons/md';
 
-import Icon from '@components/ui/Icon';
-import Input from '@components/ui/Input';
-import Button from '@components/ui/Button';
-import ColorPicker from '@components/ui/ColorPicker';
+import Icon from 'src/components/ui/Icon';
+import Input from 'src/components/ui/Input';
+import Button from 'src/components/ui/Button';
+import ColorPicker from 'src/components/ui/ColorPicker';
 
 const colors = [
   'rosePink',

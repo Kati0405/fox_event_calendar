@@ -52,8 +52,8 @@ const StyledInputWrapper = styled.div`
 const StyledInput = styled.input<{
   hasError?: boolean;
   disabled?: boolean;
-  isFilled?: boolean;
-  isActive?: boolean;
+  $isFilled?: boolean;
+  $isActive?: boolean;
 }>`
   width: 100%;
   padding: 0.375rem 0;
@@ -62,11 +62,11 @@ const StyledInput = styled.input<{
   border: none;
   border-bottom: 1px solid;
 
-  ${({ disabled, hasError, isFilled, isActive }) => {
+  ${({ disabled, hasError, $isFilled, $isActive }) => {
     if (disabled) return inputStates.disabled;
     if (hasError) return inputStates.error;
-    if (isActive) return inputStates.active;
-    if (isFilled) return inputStates.filled;
+    if ($isActive) return inputStates.active;
+    if ($isFilled) return inputStates.filled;
     return inputStates.default;
   }}
 
@@ -134,8 +134,8 @@ const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           hasError={hasError}
-          isFilled={value !== ''}
-          isActive={isActive}
+          $isFilled={value !== ''}
+          $isActive={isActive}
           onFocus={() => setIsActive(true)}
           onBlur={() => setIsActive(false)}
           className={className}

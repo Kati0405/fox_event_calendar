@@ -7,13 +7,13 @@ import {
   eachHourOfInterval,
   isSameDay,
 } from 'date-fns';
-import { Event, Day as DayType } from '@/types/types';
-import WeekDayLabel from '../WeekDayLabel';
+import { Event, Day as DayType } from 'src/types/types';
+import WeekDayLabel from 'src/components/features/WeekDayLabel';
 import WeekDay from '../WeekDay';
 
-import { Context } from '@/context/context';
-import TimeLine from '@components/features/TimeLine';
-import { createGroups } from '@/utils/groupeEventsForWeekView';
+import { Context } from 'src/context/context';
+import TimeLine from 'src/components/features/TimeLine';
+import { createGroups } from 'src/utils/groupeEventsForWeekView';
 
 export type Week = DayType[];
 

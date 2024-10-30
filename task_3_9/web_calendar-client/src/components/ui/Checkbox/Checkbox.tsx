@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ReactSVG } from 'react-svg';
 
-import checkmark from '@/assets/svg/checkmark.svg';
-import { cn } from '@/utils/utils';
+import checkmark from 'src/assets/svg/checkmark.svg';
+import { cn } from 'src/utils/utils';
 
 export interface CheckboxProps {
   checked?: boolean;

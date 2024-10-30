@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-import { Context } from '@/context/context';
-import { getMonth } from '@/utils/utils';
-import { Day as DayType } from '@/types/types';
+import { Context } from 'src/context/context';
+import { getMonth } from 'src/utils/utils';
+import { Day as DayType } from 'src/types/types';
 
 export default function Calendar({
   onDateSelect,

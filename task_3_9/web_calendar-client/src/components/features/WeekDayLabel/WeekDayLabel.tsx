@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Day as DayType } from '@/types/types';
-import AllDayEvent from '../AllDayEvent';
+import { Day as DayType } from 'src/types/types';
+import AllDayEvent from 'src/components/features/AllDayEvent';
 
 const WeekDayLabel: React.FC<DayType> = ({ date }) => {
   const formattedDate = dayjs(date).format('YYYY-MM-DD');

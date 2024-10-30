@@ -7,12 +7,12 @@ import {
   isToday,
 } from 'date-fns';
 
-import { Day as DayType } from '@/types/types';
-import WeekDayLabel from '../WeekDayLabel';
-import TimeLine from '@components/features/TimeLine';
-import { groupEvents } from '@/utils/groupeEventsForDayView';
-import DayEvent from '../DayEvent';
-import { Context } from '@/context/context';
+import { Day as DayType } from 'src/types/types';
+import WeekDayLabel from 'src/components/features/WeekDayLabel';
+import TimeLine from 'src/components/features/TimeLine';
+import { groupEvents } from 'src/utils/groupeEventsForDayView';
+import DayEvent from 'src/components/features/DayEvent';
+import { Context } from 'src/context/context';
 
 const Day: React.FC<DayType> = ({ date }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);

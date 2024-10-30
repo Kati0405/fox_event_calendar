@@ -1,10 +1,11 @@
 import { startOfDay, differenceInMinutes, format } from 'date-fns';
-import { Event } from '@/types/types';
 import { useContext, useState } from 'react';
-import { Context } from '@/context/context';
-import Modal from '@components/ui/Modal';
-import EventInfo from '@components/features/EventInfo';
-import { cn } from '@/utils/utils';
+
+import { Event } from 'src/types/types';
+import { Context } from 'src/context/context';
+import Modal from 'src/components/ui/Modal';
+import EventInfo from 'src/components/features/EventInfo';
+import { cn } from 'src/utils/utils';
 
 const minutes_in_day = 24 * 60;
 

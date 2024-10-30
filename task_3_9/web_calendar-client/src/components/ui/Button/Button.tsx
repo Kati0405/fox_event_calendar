@@ -1,9 +1,15 @@
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 
+// eslint-disable-next-line react-refresh/only-export-components
+export enum ButtonState {
+  Primary = 'primary',
+  Secondary = 'secondary',
+}
+
 export interface ButtonProps {
   children?: ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: ButtonState;
   disabled?: boolean;
   icon?: ReactNode;
   onClick?: () => void;
@@ -13,7 +19,7 @@ export interface ButtonProps {
 }
 
 const buttonVariants = {
-  primary: css`
+  [ButtonState.Primary]: css`
     border: 1px solid #00ae1c;
     background-color: #00ae1c;
     color: #ffffff;
@@ -36,7 +42,7 @@ const buttonVariants = {
     }
   `,
 
-  secondary: css`
+  [ButtonState.Secondary]: css`
     border: 1px solid #dedfe5;
     background-color: #ffffff;
     color: #323749;
@@ -61,7 +67,7 @@ const buttonVariants = {
 };
 
 const StyledButton = styled.button<{
-  variant: 'primary' | 'secondary';
+  $variant: ButtonState;
   className?: string;
 }>`
   border-radius: 0.5em;
@@ -73,7 +79,8 @@ const StyledButton = styled.button<{
   padding: 0.78125em 0.625em;
   background: transparent;
 
-  ${({ variant }) => buttonVariants[variant] || buttonVariants.primary}
+  ${({ $variant }) =>
+    buttonVariants[$variant] || buttonVariants[ButtonState.Primary]}
 
   &:disabled {
     cursor: not-allowed;
@@ -97,7 +104,7 @@ export const IconWrapper = styled.div`
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  variant = 'primary',
+  variant = ButtonState.Primary,
   disabled = false,
   icon,
   onClick,
@@ -106,7 +113,7 @@ const Button: React.FC<ButtonProps> = ({
   type = 'button',
 }) => (
   <StyledButton
-    variant={variant}
+    $variant={variant}
     disabled={disabled}
     onClick={onClick}
     aria-label={ariaLabel}

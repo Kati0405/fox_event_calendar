@@ -1,11 +1,11 @@
 import { useContext } from 'react';
+
 import Header from '../Header';
-import { Calendar, Event, User } from '@/types/types';
+import { Calendar, Event, User, Day as DayType } from 'src/types/types';
 import SidePanel from '../SidePanel';
-import Week from '@components/features/Week';
-import { Day as DayType } from '@/types/types';
-import { Context } from '@/context/context';
-import DayComponent from '@components/features/Day';
+import Week from 'src/components/features/Week';
+import { Context } from 'src/context/context';
+import DayComponent from 'src/components/features/Day';
 
 export interface LayoutProps {
   user: User | null;

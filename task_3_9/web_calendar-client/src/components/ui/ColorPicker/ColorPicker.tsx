@@ -1,4 +1,4 @@
-import { cn } from '@/utils/utils';
+import { cn } from 'src/utils/utils';
 import styled from 'styled-components';
 
 export interface ColorPickerProps {

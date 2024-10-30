@@ -1,20 +1,17 @@
 import { useEffect, useState, useContext } from 'react';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '@/firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { HiLogout } from 'react-icons/hi';
 
-import logo from '@/assets/svg/logo.svg';
-import Button from '@components/ui/Button';
-import Dropdown from '@components/ui/Dropdown';
-import { User } from '@/types/types';
-import { Context } from '@/context/context';
-import { getWeek } from '@/utils/utils';
-
-import './Header.css';
+import logo from 'src/assets/svg/logo.svg';
+import Button, { ButtonState } from 'src/components/ui/Button';
+import Dropdown from 'src/components/ui/Dropdown';
+import { User } from 'src/types/types';
+import { Context } from 'src/context/context';
+import { getWeek } from 'src/utils/utils';
+import authService from 'src/services/auth.service';
 
 export interface HeaderProps {
   user: User | null;
@@ -35,19 +32,14 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser({
-          name: user.displayName || 'Unknown User',
-          email: user.email || 'Unknown Email',
-          avatar: user.photoURL || '',
-        });
+    const unsubscribe = authService.listenToAuthChanges((response) => {
+      if (response.ok) {
+        setUser(response.data);
       } else {
         setUser(null);
       }
     });
-
-    return () => unsubscribe();
+    return unsubscribe;
   }, [setUser]);
 
   const name = user?.name;
@@ -59,11 +51,11 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      await authService.logout();
       setUser(null);
       navigate('/');
     } catch (error) {
-      console.error('Error logging out: ', error);
+      console.error('Logout error:', error);
     }
   };
 
@@ -102,27 +94,31 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
   };
 
   return (
-    <header className='header flex flex-row w-full'>
-      <div className='header-left flex'>
-        <div className='header-logo'>
-          <img src={logo} alt='Logo' />
+    <header className='flex items-center px-16 h-20 shadow-md'>
+      <div className='flex flex-row items-center gap-4 w-1/2'>
+        <div>
+          <img src={logo} alt='Logo' className='h-10' />
         </div>
-        <Button variant='primary' className='primary-btn' onClick={handleReset}>
+        <Button
+          variant={ButtonState.Primary}
+          className='w-15 h-9'
+          onClick={handleReset}
+        >
           Today
         </Button>
-        <div className='nav-btns'>
+        <div className='flex gap-2'>
           <Button
-            variant='secondary'
+            variant={ButtonState.Secondary}
             icon={<FaChevronLeft />}
-            className='nav-btn'
-            onClick={selectedView == 'Week' ? handlePrevWeek : handlePrevDay}
-          ></Button>
+            className='w-9 h-9'
+            onClick={selectedView === 'Week' ? handlePrevWeek : handlePrevDay}
+          />
           <Button
-            variant='secondary'
+            variant={ButtonState.Secondary}
             icon={<FaChevronRight />}
-            className='nav-btn'
-            onClick={selectedView == 'Week' ? handleNextWeek : handleNextDay}
-          ></Button>
+            className='w-9 h-9'
+            onClick={selectedView === 'Week' ? handleNextWeek : handleNextDay}
+          />
         </div>
         <h2 className='font-bold'>
           {selectedView === 'Week'
@@ -130,28 +126,31 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
             : dayjs(currentDay.date).format('DD MMMM YYYY')}
         </h2>
       </div>
-      <div className='header-right flex'>
+      <div className='flex flex-row items-center justify-end w-1/2'>
         <Dropdown
           options={['Day', 'Week']}
           value={selectedView}
           onChange={(value) => setSelectedView(value)}
-          className='dropdown'
-        ></Dropdown>
-        <div className='user-info'>
-          <h2 className='user-name'>{name ? `${name}` : 'User'}</h2>
-          <div className='user-avatar' onClick={toggleLogout}>
+          className='w-20 mr-8 h-9'
+        />
+        <div className='flex items-center gap-2'>
+          <h2 className='text-lg'>{name || 'User'}</h2>
+          <div
+            className='w-10 h-10 rounded-full bg-green-400 cursor-pointer flex items-center justify-center'
+            onClick={toggleLogout}
+          >
             {avatar ? (
-              <img src={avatar} alt='Ava' className='avatar-img' />
+              <img src={avatar} alt='Avatar' className='rounded-full' />
             ) : (
-              <div className='placeholder-avatar'>U</div>
+              <span className='text-white text-xl font-bold'>U</span>
             )}
           </div>
           {showLogout && (
             <Button
-              variant='secondary'
+              variant={ButtonState.Secondary}
               onClick={handleLogout}
               icon={<HiLogout />}
-              className='logout-btn'
+              className='h-9'
             >
               Logout
             </Button>

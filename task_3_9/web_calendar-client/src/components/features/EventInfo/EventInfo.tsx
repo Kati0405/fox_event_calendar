@@ -5,13 +5,13 @@ import { IoMdTime } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { format } from 'date-fns';
 
-import { Event } from '@/types/types';
-import Icon from '@components/ui/Icon';
-import { Context } from '@/context/context';
-import Modal from '@components/ui/Modal';
-import CreateEventForm from '../CreateEventForm/CreateEventForm';
-import Button from '@components/ui/Button';
-import { cn, getCalendarColor } from '@/utils/utils';
+import { Event } from 'src/types/types';
+import Icon from 'src/components/ui/Icon';
+import { Context } from 'src/context/context';
+import Modal from 'src/components/ui/Modal';
+import CreateEventForm from 'src/components/features/CreateEventForm';
+import Button from 'src/components/ui/Button';
+import { cn, getCalendarColor } from 'src/utils/utils';
 
 export interface EventInfoProps {
   event: Event;

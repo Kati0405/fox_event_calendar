@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import dayjs from 'dayjs';
 
-import LoginPage from '@/pages/LoginPage';
-import MainPage from '@/pages/MainPage';
-import { Calendar, Event, User } from '@/types/types';
-import { getWeek } from '@/utils/utils';
-import { Day as DayType } from '@/types/types';
-import { Context } from '@/context/context';
+import LoginPage from 'src/pages/LoginPage';
+import MainPage from 'src/pages/MainPage';
+import { Calendar, Event, User } from 'src/types/types';
+import { getWeek } from 'src/utils/utils';
+import { Day as DayType } from 'src/types/types';
+import { Context } from 'src/context/context';
 import {
   events as initialEvents,
   calendars as initialCalendars,
   dateFormat,
   defaultCheckedCalendarsId,
-} from '@/constants/constants';
+} from 'src/constants/constants';
 
 import './styles/global.css';
 
@@ -38,6 +38,11 @@ const App: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().month());
   const [selectedView, setSelectedView] = useState('Week');
 
+  enum AppRoutes {
+    home = '/',
+    calendar = 'my-calendar',
+  }
+
   return (
     <Context.Provider
       value={{
@@ -59,10 +64,13 @@ const App: React.FC = () => {
     >
       <Router>
         <Routes>
-          <Route path='/' element={<LoginPage setUser={setUser} />} />
+          <Route
+            path={AppRoutes.home}
+            element={<LoginPage setUser={setUser} />}
+          />
           <Route
             // path='/'
-            path='/my-calendar'
+            path={AppRoutes.calendar}
             element={
               <MainPage
                 user={user}

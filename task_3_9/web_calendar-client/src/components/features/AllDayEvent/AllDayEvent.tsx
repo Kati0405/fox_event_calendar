@@ -1,12 +1,12 @@
 import { useContext, useState } from 'react';
 import { format } from 'date-fns';
 
-import { calendars } from '@/constants/constants';
-import { cn, filterAllDayEvents, getCalendarColor } from '@/utils/utils';
-import { Context } from '@/context/context';
-import Modal from '@components/ui/Modal';
-import EventInfo from '@components/features/EventInfo';
-import { Event } from '@/types/types';
+import { calendars } from 'src/constants/constants';
+import { cn, filterAllDayEvents, getCalendarColor } from 'src/utils/utils';
+import { Context } from 'src/context/context';
+import Modal from 'src/components/ui/Modal';
+import EventInfo from 'src/components/features/EventInfo';
+import { Event } from 'src/types/types';
 
 export interface AllDayEventProps {
   formattedDate: string;
