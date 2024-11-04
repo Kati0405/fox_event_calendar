@@ -4,22 +4,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        color_primary: '#00ae1c',
-        color_secondary: '#ffffff',
-        color_primary__pressed: '#0cd52b',
-        border_color: '#323749',
-        rosePink: '#9F2957',
-        deepPink: '#D90056',
-        sunsetOrange: '#E25D33',
-        goldenYellow: '#DFC45A',
-        limeGreen: '#B8C42F',
-        emeraldGreen: '#16AF6E',
-        tealGreen: '#429488',
-        forestGreen: '#397E49',
-        skyBlue: '#439BDF',
-        royalBlue: '#4254AF',
-        lavenderBlue: '#6C7AC4',
-        plumPurple: '#8332A4',
+        red: {
+          DEFAULT: '#D90056', // Primary red color
+          dark: '#9F2957', // Darker shade of red
+        },
+        orange: {
+          DEFAULT: '#E25D33', // Primary orange color
+        },
+        yellow: {
+          DEFAULT: '#DFC45A', // Primary yellow color
+          dark: '#B8C42F',
+        },
+        green: {
+          DEFAULT: '#16AF6E', // Primary green color
+          dark: '#397E49', // Darker shade of green
+          light: '#429488',
+        },
+        blue: {
+          DEFAULT: '#439BDF', // Primary blue color
+          dark: '#4254AF', // Darker shade of blue
+          light: '#6C7AC4', // Lighter blue shade
+        },
+        neutral: {
+          light: '#F2F5F7', // Light neutral background
+          DEFAULT: '#BFBFBF', // Mid-tone neutral
+          dark: '#323749', // Dark neutral
+        },
+        purple: {
+          DEFAULT: '#8332A4', // Primary purple color
+          light: '#6C7AC4',
+        },
       },
       fonts: {
         font_family__sans: '"Roboto", sans-serif',
@@ -28,20 +42,18 @@ export default {
     },
   },
   safelist: [
-    ...Object.keys({
-      rosePink: '#9F2957',
-      deepPink: '#D90056',
-      sunsetOrange: '#E25D33',
-      goldenYellow: '#DFC45A',
-      limeGreen: '#B8C42F',
-      emeraldGreen: '#16AF6E',
-      tealGreen: '#429488',
-      forestGreen: '#397E49',
-      skyBlue: '#439BDF',
-      royalBlue: '#4254AF',
-      lavenderBlue: '#6C7AC4',
-      plumPurple: '#8332A4',
-    }).flatMap((color) => [`bg-${color}`, `border-${color}`]),
-  ],
+    'red-dark',
+    'red',
+    'orange',
+    'yellow',
+    'yellow-dark',
+    'green',
+    'green-light',
+    'green-dark',
+    'blue',
+    'blue-light',
+    'purple',
+    'purple-light',
+  ].flatMap((color) => [`bg-${color}`, `border-${color}`]),
   plugins: [],
 };

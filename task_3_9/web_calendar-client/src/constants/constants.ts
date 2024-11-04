@@ -8,18 +8,18 @@ export const calendars: Calendar[] = [
     {
         id: '0',
         title: 'Default Calendar',
-        colorClass: 'goldenYellow',
+        colorClass: 'yellow',
         isDefault: true
     },
     {
         id: '1',
         title: 'Calendar 1',
-        colorClass: 'tealGreen',
+        colorClass: 'green',
     },
     {
         id: '2',
         title: 'Calendar 2',
-        colorClass: 'skyBlue',
+        colorClass: 'blue',
     },
 ]
 

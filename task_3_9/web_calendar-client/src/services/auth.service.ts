@@ -6,6 +6,7 @@ interface IRequest<T, S> {
     data: T;
     ok: S;
     status: number;
+    error?: string
 }
 
 const provider = new GoogleAuthProvider();

@@ -11,7 +11,7 @@ import CreateCalendarForm from 'src/components/features/CreateCalendarForm';
 import { calendars as initialCalendars } from 'src/constants/constants';
 import { Calendar, Event } from 'src/types/types';
 import { Context } from 'src/context/context';
-import Button from 'src/components/ui/Button';
+import Button, { ButtonState } from 'src/components/ui/Button';
 
 const MyCalendars = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -151,7 +151,7 @@ const MyCalendars = () => {
                 You'll no longer have access to this calendar and its events.
               </p>
               <div className='flex justify-end mt-4 gap-3'>
-                <Button onClick={cancelDelete} variant='secondary'>
+                <Button onClick={cancelDelete} variant={ButtonState.Secondary}>
                   Cancel
                 </Button>
                 <Button onClick={confirmDeleteCalendar}>Delete</Button>

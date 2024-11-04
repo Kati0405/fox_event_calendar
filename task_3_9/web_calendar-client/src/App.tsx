@@ -27,10 +27,9 @@ const App: React.FC = () => {
   );
   const [currentDay, setCurrentDay] = useState<DayType>({
     date: dayjs().toDate(),
-    events:
-      events.filter(
-        (event) => dayjs(event.start_time).format(dateFormat) === initialDate
-      ) || [],
+    events: events.filter(
+      (event) => dayjs(event.start_time).format(dateFormat) === initialDate
+    ),
   });
   const [currentWeek, setCurrentWeek] = useState<DayType[]>(
     getWeek(dayjs(), events)

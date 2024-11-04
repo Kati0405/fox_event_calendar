@@ -8,18 +8,18 @@ import Button from 'src/components/ui/Button';
 import ColorPicker from 'src/components/ui/ColorPicker';
 
 const colors = [
-  'rosePink',
-  'deepPink',
-  'sunsetOrange',
-  'goldenYellow',
-  'limeGreen',
-  'emeraldGreen',
-  'tealGreen',
-  'forestGreen',
-  'skyBlue',
-  'royalBlue',
-  'lavenderBlue',
-  'plumPurple',
+  'red-dark',
+  'red',
+  'orange',
+  'yellow',
+  'yellow-dark',
+  'green',
+  'green-light',
+  'green-dark',
+  'blue',
+  'blue-light',
+  'purple',
+  'purple-light',
 ];
 
 export interface CreateCalendarFromProps {

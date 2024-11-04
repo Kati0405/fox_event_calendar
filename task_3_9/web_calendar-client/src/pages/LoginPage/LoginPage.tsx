@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 
@@ -12,16 +13,21 @@ export interface LoginPageProps {
 
 const LoginPage: React.FC<LoginPageProps> = ({ setUser }) => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleGoogleLogin = async () => {
+    setErrorMessage(null);
     try {
       const response = await authService.signInWithGoogle();
       if (response.ok && response.data) {
         setUser(response.data);
         navigate('/my-calendar');
+      } else {
+        setErrorMessage(response.error || 'Login failed. Please try again.');
       }
     } catch (error) {
       console.error('Error logging in:', error);
+      setErrorMessage('An unexpected error occurred. Please try again later.');
     }
   };
 
@@ -37,6 +43,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser }) => {
         >
           Continue with Google
         </Button>
+        {errorMessage && (
+          <div aria-live='polite' className='text-red-500 text-sm mt-4'>
+            {errorMessage}
+          </div>
+        )}
       </div>
     </div>
   );
