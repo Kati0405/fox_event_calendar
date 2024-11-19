@@ -21,15 +21,15 @@ const getUserProfile = async (token: string) => {
     });
 };
 
-const validateUser = (firebaseUser: FirebaseUser | null): User | null => {
-    if (!firebaseUser) return null;
-    return {
-        firstName: firebaseUser.displayName?.split(' ')[0] || 'Unknown First Name',
-        lastName: firebaseUser.displayName?.split(' ')[1] || 'Unknown Last Name',
-        email: firebaseUser.email || 'Unknown Email',
-        avatar: firebaseUser.photoURL || '',
-    };
-};
+// const validateUser = (firebaseUser: FirebaseUser | null): User | null => {
+//     if (!firebaseUser) return null;
+//     return {
+//         firstName: firebaseUser.displayName?.split(' ')[0] || 'Unknown First Name',
+//         lastName: firebaseUser.displayName?.split(' ')[1] || 'Unknown Last Name',
+//         email: firebaseUser.email || 'Unknown Email',
+//         picture: firebaseUser.photoURL || '',
+//     };
+// };
 
 // const signInWithGoogle = async (): Promise<IRequest<User | null, boolean>> => {
 //     try {
@@ -80,23 +80,23 @@ const signInWithGoogle = async (): Promise<IRequest<User | null, boolean>> => {
     }
 };
 
-const listenToAuthChanges = (callback: (response: IRequest<User | null, boolean>) => void) => {
-    return onAuthStateChanged(auth, (firebaseUser) => {
-        const user = firebaseUser
-            ? {
-                firstName: firebaseUser.displayName?.split(' ')[0] || 'Unknown First Name',
-                lastName: firebaseUser.displayName?.split(' ')[1] || 'Unknown Last Name',
-                email: firebaseUser.email || 'Unknown Email',
-                avatar: firebaseUser.photoURL || '',
-            }
-            : null;
-        callback({
-            data: user,
-            ok: true,
-            status: user ? 200 : 204,
-        });
-    });
-};
+// const listenToAuthChanges = (callback: (response: IRequest<User | null, boolean>) => void) => {
+//     return onAuthStateChanged(auth, (firebaseUser) => {
+//         const user = firebaseUser
+//             ? {
+//                 firstName: firebaseUser.displayName?.split(' ')[0] || 'Unknown First Name',
+//                 lastName: firebaseUser.displayName?.split(' ')[1] || 'Unknown Last Name',
+//                 email: firebaseUser.email || 'Unknown Email',
+//                 avatar: firebaseUser.photoURL || '',
+//             }
+//             : null;
+//         callback({
+//             data: user,
+//             ok: true,
+//             status: user ? 200 : 204,
+//         });
+//     });
+// };
 
 const logout = async (): Promise<IRequest<null, boolean>> => {
     try {
@@ -116,4 +116,4 @@ const logout = async (): Promise<IRequest<null, boolean>> => {
     }
 };
 
-export default { signInWithGoogle, listenToAuthChanges, logout, validateUser, getUserProfile };
+export default { signInWithGoogle, logout, getUserProfile };

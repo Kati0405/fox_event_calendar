@@ -22,6 +22,18 @@ const TimePickerComponent: React.FC<TimePickerComponentProps> = ({
   );
 
   useEffect(() => {
+    if (initialStartTime) {
+      setSelectedStartTime(initialStartTime);
+    }
+  }, [initialStartTime]);
+
+  useEffect(() => {
+    if (initialEndTime) {
+      setSelectedEndTime(initialEndTime);
+    }
+  }, [initialEndTime]);
+
+  useEffect(() => {
     onTimeChange(selectedStartTime, selectedEndTime);
   }, [selectedStartTime, selectedEndTime, onTimeChange]);
 

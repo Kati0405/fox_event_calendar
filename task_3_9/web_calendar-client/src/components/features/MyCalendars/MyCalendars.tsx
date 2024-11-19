@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { MdModeEditOutline } from 'react-icons/md';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
@@ -28,6 +28,12 @@ const MyCalendars = () => {
   );
   const [calendarToEdit, setCalendarToEdit] = useState<Calendar | null>(null);
   const [hoveredCalendar, setHoveredCalendar] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (calendars.length > 0) {
+      setCheckedCalendars(calendars.map((calendar) => calendar._id));
+    }
+  }, [calendars, setCheckedCalendars]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);

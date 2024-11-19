@@ -13,12 +13,7 @@ import { Calendar, Event, User } from 'src/types/types';
 import { getWeek } from 'src/utils/utils';
 import { Day as DayType } from 'src/types/types';
 import { Context } from 'src/context/context';
-import {
-  // events as initialEvents,
-  // calendars as initialCalendars,
-  dateFormat,
-  defaultCheckedCalendarsId,
-} from 'src/constants/constants';
+import { dateFormat, defaultCheckedCalendarsId } from 'src/constants/constants';
 
 import { fetchEvents } from './api/eventService';
 import { fetchCalendars } from './api/calendarService';

@@ -17,6 +17,12 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
   );
 
   useEffect(() => {
+    if (initialDate) {
+      setSelectedDate(initialDate);
+    }
+  }, [initialDate]);
+
+  useEffect(() => {
     onDateChange(selectedDate);
   }, [selectedDate, onDateChange]);
 

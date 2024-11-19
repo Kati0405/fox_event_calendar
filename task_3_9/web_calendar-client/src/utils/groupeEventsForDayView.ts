@@ -37,7 +37,8 @@ export const groupEvents = (date: Date, events: Event[]): GroupedEvents => {
     );
 
     const sortedEvents = eventsToday.sort(
-        (a, b) => a.start_time.getTime() - b.start_time.getTime()
+        (a, b) =>
+            new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
     );
 
     const eventGroups = createGroups(sortedEvents);

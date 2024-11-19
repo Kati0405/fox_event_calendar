@@ -44,6 +44,8 @@ const Header: React.FC = () => {
   const handleLogout = async () => {
     try {
       await authService.logout();
+      localStorage.removeItem('jwtToken');
+      localStorage.removeItem('user');
       setUser(null);
       navigate('/');
     } catch (error) {

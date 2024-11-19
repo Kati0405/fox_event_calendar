@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 
-import { calendars } from 'src/constants/constants';
 import { cn, filterAllDayEvents, getCalendarColor } from 'src/utils/utils';
 import Modal from 'src/components/ui/Modal';
 import EventInfo from 'src/components/features/EventInfo';
@@ -22,7 +21,7 @@ const AllDayEvent: React.FC<AllDayEventProps> = ({ formattedDate }) => {
     return <div>Loading...</div>;
   }
 
-  const { events } = data;
+  const { events, calendars } = data;
   const allDayEvents = filterAllDayEvents(events, formattedDate);
 
   const handleOpenModal = (event: Event) => {
@@ -51,7 +50,7 @@ const AllDayEvent: React.FC<AllDayEventProps> = ({ formattedDate }) => {
           ? `bg-${eventColor} bg-opacity-100`
           : `bg-${eventColor} bg-opacity-50`;
 
-        const combinedClassName = `text-xs p-1 rounded-md ${cn(
+        const combinedClassName = `text-xs p-1 rounded ${cn(
           backgroundClass,
           getCalendarColor(calendars, event.calendarId)
         )}`;

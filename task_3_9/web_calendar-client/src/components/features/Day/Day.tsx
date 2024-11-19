@@ -48,7 +48,7 @@ const Day: React.FC<DayType> = ({ date }) => {
                 day={date}
                 event={event}
                 index={index}
-                key={event.id}
+                key={event._id}
                 grouplength={group.length}
                 containerHeight={ref?.offsetHeight || 1}
               />
