@@ -8,23 +8,19 @@ import { HiLogout } from 'react-icons/hi';
 import logo from 'src/assets/svg/logo.svg';
 import Button, { ButtonState } from 'src/components/ui/Button';
 import Dropdown from 'src/components/ui/Dropdown';
-import { User } from 'src/types/types';
 import { Context } from 'src/context/context';
 import { getWeek } from 'src/utils/utils';
 import authService from 'src/services/auth.service';
 
-export interface HeaderProps {
-  user: User | null;
-  setUser: (user: User | null) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
+const Header: React.FC = () => {
   const {
     setCurrentMonth,
     currentWeek,
     setCurrentWeek,
     setCurrentDay,
     currentDay,
+    user,
+    setUser,
   } = useContext(Context)!;
   const { selectedView, setSelectedView } = useContext(Context)!;
   const [showLogout, setShowLogout] = useState<boolean>(false);
@@ -32,18 +28,14 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = authService.listenToAuthChanges((response) => {
-      if (response.ok) {
-        setUser(response.data);
-      } else {
-        setUser(null);
-      }
-    });
-    return unsubscribe;
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, [setUser]);
 
-  const name = user?.name;
-  const avatar = user?.avatar;
+  const name = user ? `${user.firstName} ${user.lastName}` : 'User';
+  const avatar = user?.picture;
 
   const toggleLogout = () => {
     setShowLogout((prev) => !prev);
@@ -140,7 +132,11 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
             onClick={toggleLogout}
           >
             {avatar ? (
-              <img src={avatar} alt='Avatar' className='rounded-full' />
+              <img
+                src={user.picture}
+                alt='Profile picture'
+                className='rounded-full'
+              />
             ) : (
               <span className='text-white text-xl font-bold'>U</span>
             )}

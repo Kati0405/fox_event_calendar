@@ -5,16 +5,20 @@ import './custom-datepicker.css';
 
 export interface DatePickerComponentProps {
   onDateChange: (date: Date | null) => void;
+  initialDate?: Date | null;
 }
 
 const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
   onDateChange,
+  initialDate,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    initialDate || null
+  );
 
   useEffect(() => {
     onDateChange(selectedDate);
-  });
+  }, [selectedDate, onDateChange]);
 
   return (
     <div className='date-picker-container'>

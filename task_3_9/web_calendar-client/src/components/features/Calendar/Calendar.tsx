@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-
-import { Context } from 'src/context/context';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
 import { getMonth } from 'src/utils/utils';
 import { Day as DayType } from 'src/types/types';
 
@@ -11,14 +10,19 @@ export default function Calendar({
 }: {
   onDateSelect: (date: Date) => void;
 }) {
-  const { currentMonth, setCurrentMonth } = useContext(Context)!;
-  const [currentMonthData, setCurrentMonthData] = useState<DayType[][]>(
-    getMonth(currentMonth)
-  );
+  const { loading, data } = useCalendarContext();
+  const { currentMonth, setCurrentMonth } = data;
 
   useEffect(() => {
     setCurrentMonthData(getMonth(currentMonth));
   }, [currentMonth]);
+  const [currentMonthData, setCurrentMonthData] = useState<DayType[][]>(
+    getMonth(currentMonth)
+  );
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const handlePrevMonth = () => {
     setCurrentMonth((prev) => prev - 1);

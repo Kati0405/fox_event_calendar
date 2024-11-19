@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState } from 'react';
 import { MdTitle, MdOutlineSubject } from 'react-icons/md';
 import { IoMdTime } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
@@ -9,10 +8,11 @@ import DatePickerComponent from 'src/components/ui/DatePicker';
 import Icon from 'src/components/ui/Icon';
 import Input from 'src/components/ui/Input';
 import TimePickerComponent from '../TimePicker';
-import { Context } from 'src/context/context';
 import { Calendar, Event } from 'src/types/types';
 import CheckboxWithLabel from 'src/components/ui/CheckboxLabeled/CheckboxLabeled';
 import { RepeatOptions } from 'src/constants/constants';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
+import { createEvent, updateEvent } from 'src/api/eventService';
 
 export interface CreateEventFormProps {
   closeModal: () => void;
@@ -27,13 +27,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   event,
   onEditEvent,
 }) => {
-  const { calendars, setEvents } = useContext(Context)!;
+  const { loading, data } = useCalendarContext();
+  const { calendars, setEvents } = data;
 
   const [title, setTitle] = useState('');
   const [eventDate, setEventDate] = useState<Date | null>(
     initialDate ? new Date(initialDate) : null
   );
-  const [calendar, setCalendar] = useState(calendars[0]?.id || '');
+  const [calendar, setCalendar] = useState(calendars[0]?._id || '');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
@@ -48,14 +49,18 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     }
     if (event) {
       setTitle(event.title);
-      setEventDate(event.date);
+      setEventDate(new Date(event.date));
       setCalendar(event.calendarId);
       setDescription(event.description);
       setStartTime(new Date(event.start_time));
       setEndTime(new Date(event.end_time));
       setIsAllDay(event.isAllDay || false);
     }
-  }, [initialDate, event]);
+  }, [initialDate, event, calendars]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const handleEventDateChange = (date: Date | null) => {
     setEventDate(date);
@@ -67,7 +72,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   };
 
   const handleAllDayChange = () => {
-    setIsAllDay(!isAllDay);
+    setIsAllDay((prev) => !prev);
     if (!isAllDay) {
       setStartTime(new Date(eventDate!.setHours(0, 0, 0, 0)));
       setEndTime(new Date(eventDate!.setHours(23, 59, 0, 0)));
@@ -81,7 +86,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setRepeatOption(e.target.value as RepeatOptions);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!startTime || !endTime || !title || !eventDate) {
@@ -93,12 +98,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       alert('Start time must be before end time.');
       return;
     }
-
     const start = new Date(eventDate);
-    start.setHours(startTime.getHours(), startTime.getMinutes(), 0, 0);
-
     const end = new Date(eventDate);
-    end.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
 
     if (!isAllDay) {
       start.setHours(startTime!.getHours(), startTime!.getMinutes(), 0, 0);
@@ -108,26 +109,33 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       end.setHours(23, 59, 0, 0);
     }
 
-    const newEvent = {
-      id: event ? event.id : uuidv4(),
-      date: eventDate,
-      start_time: start,
-      end_time: end,
-      title: title,
-      description: description,
+    const newEvent: Event = {
+      _id: event?._id,
+      date: start.toISOString(),
+      start_time: start.toISOString(),
+      end_time: end.toISOString(),
+      title,
+      description,
       calendarId: calendar,
-      isAllDay: isAllDay,
-      repeat: repeatOption,
+      isAllDay,
+      repeatOption,
     };
 
-    if (onEditEvent) {
-      onEditEvent(newEvent);
-    } else {
-      setEvents((prevEvents: Event[]) => [...prevEvents, newEvent]);
+    try {
+      if (event) {
+        await updateEvent(event._id!, newEvent);
+        if (onEditEvent) onEditEvent(newEvent);
+      } else {
+        await createEvent(newEvent);
+        setEvents((prevEvents: Event[]) => [...prevEvents, newEvent]);
+      }
+      closeModal();
+    } catch (error) {
+      alert('Error saving event: ' + error);
     }
-    console.log(newEvent);
-    closeModal();
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <form className='create-event-form' onSubmit={handleSubmit}>
@@ -143,8 +151,17 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       <div className='flex flex-row gap-3'>
         <Icon icon={IoMdTime}></Icon>
         <div className='select-date flex'>
-          <DatePickerComponent onDateChange={handleEventDateChange} />
-          {!isAllDay && <TimePickerComponent onTimeChange={handleTimeChange} />}
+          <DatePickerComponent
+            onDateChange={handleEventDateChange}
+            initialDate={eventDate}
+          />
+          {!isAllDay && (
+            <TimePickerComponent
+              onTimeChange={handleTimeChange}
+              initialStartTime={startTime}
+              initialEndTime={endTime}
+            />
+          )}
         </div>
       </div>
       <div className='flex flex-row mt-3 mb-3 ml-6'>
@@ -175,7 +192,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           className='border-b-2 border-black pb-2 w-full focus:outline-none mb-3'
         >
           {calendars.map((cal: Calendar) => (
-            <option key={cal.id} value={cal.id}>
+            <option key={cal._id} value={cal._id}>
               {cal.title}
             </option>
           ))}

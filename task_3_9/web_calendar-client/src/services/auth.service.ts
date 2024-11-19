@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
 import { auth } from 'src/firebase/firebaseConfig';
 import { User } from 'src/types/types';
@@ -11,24 +12,60 @@ interface IRequest<T, S> {
 
 const provider = new GoogleAuthProvider();
 
+
+const getUserProfile = async (token: string) => {
+    return axios.get('http://localhost:3000/user/profile', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
 const validateUser = (firebaseUser: FirebaseUser | null): User | null => {
     if (!firebaseUser) return null;
     return {
-        name: firebaseUser.displayName || 'Unknown User',
+        firstName: firebaseUser.displayName?.split(' ')[0] || 'Unknown First Name',
+        lastName: firebaseUser.displayName?.split(' ')[1] || 'Unknown Last Name',
         email: firebaseUser.email || 'Unknown Email',
         avatar: firebaseUser.photoURL || '',
     };
 };
 
+// const signInWithGoogle = async (): Promise<IRequest<User | null, boolean>> => {
+//     try {
+//         const result = await signInWithPopup(auth, provider);
+//         return {
+//             data: result.user ? {
+//                 name: result.user.displayName || 'Unknown User',
+//                 email: result.user.email || 'Unknown Email',
+//                 avatar: result.user.photoURL || '',
+//             } : null,
+//             ok: true,
+//             status: 200,
+//         };
+//     } catch (error) {
+//         console.error('Google sign-in error:', error);
+//         return {
+//             data: null,
+//             ok: false,
+//             status: 500,
+//         };
+//     }
+// };
+
 const signInWithGoogle = async (): Promise<IRequest<User | null, boolean>> => {
     try {
         const result = await signInWithPopup(auth, provider);
+        const googleToken = await result.user.getIdToken();
+
+        const response = await axios.post('http://localhost:3000/auth/google/login', { token: googleToken });
+        const { jwtToken, user } = response.data;
+
+        localStorage.setItem('jwtToken', jwtToken);
+
+
         return {
-            data: result.user ? {
-                name: result.user.displayName || 'Unknown User',
-                email: result.user.email || 'Unknown Email',
-                avatar: result.user.photoURL || '',
-            } : null,
+            data: user,
             ok: true,
             status: 200,
         };
@@ -38,6 +75,7 @@ const signInWithGoogle = async (): Promise<IRequest<User | null, boolean>> => {
             data: null,
             ok: false,
             status: 500,
+            error: 'Authentication failed. Please try again.',
         };
     }
 };
@@ -46,7 +84,8 @@ const listenToAuthChanges = (callback: (response: IRequest<User | null, boolean>
     return onAuthStateChanged(auth, (firebaseUser) => {
         const user = firebaseUser
             ? {
-                name: firebaseUser.displayName || 'Unknown User',
+                firstName: firebaseUser.displayName?.split(' ')[0] || 'Unknown First Name',
+                lastName: firebaseUser.displayName?.split(' ')[1] || 'Unknown Last Name',
                 email: firebaseUser.email || 'Unknown Email',
                 avatar: firebaseUser.photoURL || '',
             }
@@ -77,4 +116,4 @@ const logout = async (): Promise<IRequest<null, boolean>> => {
     }
 };
 
-export default { signInWithGoogle, listenToAuthChanges, logout, validateUser };
+export default { signInWithGoogle, listenToAuthChanges, logout, validateUser, getUserProfile };

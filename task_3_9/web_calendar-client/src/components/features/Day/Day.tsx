@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
   format,
   endOfDay,
@@ -12,11 +12,17 @@ import WeekDayLabel from 'src/components/features/WeekDayLabel';
 import TimeLine from 'src/components/features/TimeLine';
 import { groupEvents } from 'src/utils/groupeEventsForDayView';
 import DayEvent from 'src/components/features/DayEvent';
-import { Context } from 'src/context/context';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
 
 const Day: React.FC<DayType> = ({ date }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const { events } = useContext(Context)!;
+  const { loading, data } = useCalendarContext();
+
+  const { events } = data;
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const hours = eachHourOfInterval({
     start: startOfDay(date),

@@ -38,7 +38,7 @@ const WeekDay: React.FC<WeekDayProps> = ({ day }) => {
                 day={day}
                 event={event}
                 index={index}
-                key={event.id}
+                key={event._id}
                 grouplength={group.length}
                 containerHeight={ref?.offsetHeight || 1}
               />

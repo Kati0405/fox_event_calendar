@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { MdTitle, MdOutlineSubject, MdModeEditOutline } from 'react-icons/md';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { IoMdTime } from 'react-icons/io';
@@ -7,25 +7,30 @@ import { format } from 'date-fns';
 
 import { Event } from 'src/types/types';
 import Icon from 'src/components/ui/Icon';
-import { Context } from 'src/context/context';
 import Modal from 'src/components/ui/Modal';
 import CreateEventForm from 'src/components/features/CreateEventForm';
-import Button from 'src/components/ui/Button';
+import Button, { ButtonState } from 'src/components/ui/Button';
 import { cn, getCalendarColor } from 'src/utils/utils';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
 
 export interface EventInfoProps {
   event: Event;
 }
 
 const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
-  const { calendars, setEvents } = useContext(Context)!;
+  const { loading, data } = useCalendarContext();
+  const { calendars, setEvents } = data;
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   const handleEditEvent = (updatedEvent: Event) => {
     setEvents((prevEvents) =>
-      prevEvents.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
+      prevEvents.map((e) => (e._id === updatedEvent._id ? updatedEvent : e))
     );
     setIsEditModalOpen(false);
   };
@@ -33,7 +38,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
   const handleDeleteEvent = () => {
     if (eventToDelete) {
       setEvents((prevEvents) =>
-        prevEvents.filter((e) => e.id !== eventToDelete.id)
+        prevEvents.filter((e) => e._id !== eventToDelete._id)
       );
       setIsDeleteModalOpen(false);
       setEventToDelete(null);
@@ -41,7 +46,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
   };
 
   const findCalendarTitleById = (id: string) => {
-    const calendar = calendars.find((calendar) => calendar.id === id);
+    const calendar = calendars.find((calendar) => calendar._id === id);
     return calendar ? calendar.title : 'Unknown Calendar';
   };
 
@@ -93,7 +98,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
               <div className='flex justify-end mt-4 gap-3'>
                 <Button
                   onClick={() => setIsDeleteModalOpen(false)}
-                  variant='secondary'
+                  variant={ButtonState.Secondary}
                 >
                   Cancel
                 </Button>

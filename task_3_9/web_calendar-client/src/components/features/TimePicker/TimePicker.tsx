@@ -5,17 +5,41 @@ import './custom-datepicker.css';
 
 export interface TimePickerComponentProps {
   onTimeChange: (start: Date | null, end: Date | null) => void;
+  initialStartTime?: Date | null;
+  initialEndTime?: Date | null;
 }
 
 const TimePickerComponent: React.FC<TimePickerComponentProps> = ({
   onTimeChange,
+  initialStartTime = null,
+  initialEndTime = null,
 }) => {
-  const [selectedStartTime, setSelectedStartTIme] = useState<Date | null>(null);
-  const [selectedEndTime, setSelectedEndTIme] = useState<Date | null>(null);
+  const [selectedStartTime, setSelectedStartTime] = useState<Date | null>(
+    initialStartTime
+  );
+  const [selectedEndTime, setSelectedEndTime] = useState<Date | null>(
+    initialEndTime
+  );
 
   useEffect(() => {
     onTimeChange(selectedStartTime, selectedEndTime);
   }, [selectedStartTime, selectedEndTime, onTimeChange]);
+
+  const handleStartTimeChange = (time: Date | null) => {
+    setSelectedStartTime(time);
+
+    if (selectedEndTime && time && selectedEndTime <= time) {
+      setSelectedEndTime(null);
+    }
+  };
+
+  const handleEndTimeChange = (time: Date | null) => {
+    if (selectedStartTime && time && time < selectedStartTime) {
+      alert('End time cannot be earlier than start time.');
+      return;
+    }
+    setSelectedEndTime(time);
+  };
 
   return (
     <div className='time-picker-container flex flex-col'>
@@ -26,7 +50,7 @@ const TimePickerComponent: React.FC<TimePickerComponentProps> = ({
         <DatePicker
           id='time-picker'
           selected={selectedStartTime}
-          onChange={(time: Date | null) => setSelectedStartTIme(time)}
+          onChange={handleStartTimeChange}
           className='time-picker-input'
           showTimeSelect
           showTimeSelectOnly
@@ -40,7 +64,7 @@ const TimePickerComponent: React.FC<TimePickerComponentProps> = ({
         <DatePicker
           id='time-picker'
           selected={selectedEndTime}
-          onChange={(time: Date | null) => setSelectedEndTIme(time)}
+          onChange={handleEndTimeChange}
           className='time-picker-input'
           showTimeSelect
           showTimeSelectOnly

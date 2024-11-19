@@ -1,35 +1,44 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import dayjs from 'dayjs';
 
-import LoginPage from 'src/pages/LoginPage';
-import MainPage from 'src/pages/MainPage';
+import { AppRoutes } from 'src/constants/constants';
+import { routesConfig } from '../routesConfig';
 import { Calendar, Event, User } from 'src/types/types';
 import { getWeek } from 'src/utils/utils';
 import { Day as DayType } from 'src/types/types';
 import { Context } from 'src/context/context';
 import {
-  events as initialEvents,
-  calendars as initialCalendars,
+  // events as initialEvents,
+  // calendars as initialCalendars,
   dateFormat,
   defaultCheckedCalendarsId,
 } from 'src/constants/constants';
 
+import { fetchEvents } from './api/eventService';
+import { fetchCalendars } from './api/calendarService';
 import './styles/global.css';
 
 const App: React.FC = () => {
   const initialDate = dayjs().format(dateFormat);
   const [user, setUser] = useState<User | null>(null);
-  const [events, setEvents] = useState<Event[]>(initialEvents);
-  const [calendars, setCalendars] = useState<Calendar[]>(initialCalendars);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [calendars, setCalendars] = useState<Calendar[]>([]);
   const [checkedCalendars, setCheckedCalendars] = useState<string[]>(
     defaultCheckedCalendarsId
   );
   const [currentDay, setCurrentDay] = useState<DayType>({
     date: dayjs().toDate(),
-    events: events.filter(
-      (event) => dayjs(event.start_time).format(dateFormat) === initialDate
-    ),
+    events: useMemo(() => {
+      return events.filter(
+        (event) => dayjs(event.start_time).format(dateFormat) === initialDate
+      );
+    }, [events, initialDate]),
   });
   const [currentWeek, setCurrentWeek] = useState<DayType[]>(
     getWeek(dayjs(), events)
@@ -37,10 +46,22 @@ const App: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().month());
   const [selectedView, setSelectedView] = useState('Week');
 
-  enum AppRoutes {
-    home = '/',
-    calendar = 'my-calendar',
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        try {
+          const fetchedEvents = await fetchEvents();
+          const fetchedCalendars = await fetchCalendars();
+          setEvents(fetchedEvents);
+          setCalendars(fetchedCalendars);
+        } catch (error) {
+          console.error('Error fetching events or calendars:', error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   return (
     <Context.Provider
@@ -59,28 +80,32 @@ const App: React.FC = () => {
         setCalendars,
         checkedCalendars,
         setCheckedCalendars,
+        user,
+        setUser,
       }}
     >
       <Router>
         <Routes>
-          <Route
-            path={AppRoutes.home}
-            element={<LoginPage setUser={setUser} />}
-          />
-          <Route
-            // path='/'
-            path={AppRoutes.calendar}
-            element={
-              <MainPage
-                user={user}
-                setUser={setUser}
-                week={currentWeek}
-                currentDay={currentDay}
-                events={events}
-                calendars={calendars}
-              />
-            }
-          />
+          {routesConfig.map(({ url, component: Component, isPrivate }) => (
+            <Route
+              key={url}
+              path={url}
+              element={
+                isPrivate && !user ? (
+                  <Navigate to={AppRoutes.HOME} />
+                ) : (
+                  <Component
+                    user={user}
+                    setUser={setUser}
+                    currentDay={currentDay}
+                    week={currentWeek}
+                    events={events}
+                    calendars={calendars}
+                  />
+                )
+              }
+            />
+          ))}
         </Routes>
       </Router>
     </Context.Provider>

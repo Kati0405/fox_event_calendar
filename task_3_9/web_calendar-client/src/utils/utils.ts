@@ -55,6 +55,6 @@ export const filterAllDayEvents = (events: Event[] = [], date: string): Event[] 
 };
 
 export const getCalendarColor = (calendars: Calendar[] = [], calendarId: string): string => {
-    const calendar = calendars.find((cal) => cal.id === calendarId);
+    const calendar = calendars.find((cal) => cal._id === calendarId);
     return calendar ? calendar.colorClass : '#ccc';
 };

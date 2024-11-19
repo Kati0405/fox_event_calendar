@@ -1,11 +1,11 @@
 import { startOfDay, differenceInMinutes, format } from 'date-fns';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { Event } from 'src/types/types';
-import { Context } from 'src/context/context';
 import Modal from 'src/components/ui/Modal';
 import EventInfo from 'src/components/features/EventInfo';
 import { cn } from 'src/utils/utils';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
 
 const minutes_in_day = 24 * 60;
 
@@ -24,15 +24,20 @@ const DayEvent: React.FC<DayEvent> = ({
   grouplength,
   containerHeight,
 }) => {
-  const { selectedView, calendars, checkedCalendars } = useContext(Context)!;
+  const { loading, data } = useCalendarContext();
+  const { selectedView, calendars, checkedCalendars } = data;
   const today = startOfDay(day);
   const eventDuration = differenceInMinutes(event.end_time, event.start_time);
 
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   const calendar = calendars.find(
-    (calendar) => calendar.id === event.calendarId
+    (calendar) => calendar._id === event.calendarId
   );
   const eventColor = calendar ? calendar.colorClass : 'green';
 

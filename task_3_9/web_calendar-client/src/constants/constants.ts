@@ -3,6 +3,10 @@ import { add, addDays, startOfToday, subDays } from "date-fns";
 
 export const dateFormat = 'YYYY-MM-DD'
 
+export enum AppRoutes {
+    HOME = '/',
+    MY_CALENDAR = '/my-calendar',
+}
 
 export const calendars: Calendar[] = [
     {

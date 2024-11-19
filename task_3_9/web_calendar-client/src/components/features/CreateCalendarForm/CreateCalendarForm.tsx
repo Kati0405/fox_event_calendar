@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { MdTitle, MdOutlinePalette } from 'react-icons/md';
+
+import { createCalendar, updateCalendar } from 'src/api/calendarService';
 
 import Icon from 'src/components/ui/Icon';
 import Input from 'src/components/ui/Input';
@@ -24,16 +25,18 @@ const colors = [
 
 export interface CreateCalendarFromProps {
   onAddCalendar: (newCalendar: {
-    id: string;
+    _id: string;
     title: string;
     colorClass: string;
+    userId: string;
   }) => void;
   onEditCalendar?: (updatedCalendar: {
-    id: string;
+    _id: string;
     title: string;
     colorClass: string;
+    userId: string;
   }) => void;
-  calendarToEdit?: { id: string; title: string; colorClass: string } | null;
+  calendarToEdit?: { _id: string; title: string; colorClass: string } | null;
 }
 
 const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
@@ -43,6 +46,8 @@ const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
 }) => {
   const [title, setTitle] = useState('');
   const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (calendarToEdit) {
@@ -51,32 +56,59 @@ const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
     }
   }, [calendarToEdit]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title || !selectedColor) {
       alert('Please provide a title and select a color.');
       return;
     }
-    if (calendarToEdit) {
-      const updatedCalendar = {
-        id: calendarToEdit.id,
-        title: title,
-        colorClass: selectedColor,
-      };
-      if (onEditCalendar) {
-        onEditCalendar(updatedCalendar);
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const calendarData = { title, colorClass: selectedColor };
+      if (calendarToEdit) {
+        const updatedCalendar = await updateCalendar(
+          calendarToEdit._id,
+          calendarData
+        );
+        if (onEditCalendar) onEditCalendar(updatedCalendar);
+      } else {
+        const newCalendar = await createCalendar(calendarData);
+        onAddCalendar(newCalendar);
       }
-    } else {
-      const newCalendar = {
-        id: uuidv4(),
-        title: title,
-        colorClass: selectedColor,
-      };
-      onAddCalendar(newCalendar);
+
+      setTitle('');
+      setSelectedColor(colors[0]);
+    } catch (error) {
+      console.error('Error:', error);
+      setError('There was an error while saving the calendar.');
+    } finally {
+      setLoading(false);
     }
-    setTitle('');
-    setSelectedColor(colors[0]);
   };
+
+  // if (calendarToEdit) {
+  //   const updatedCalendar = {
+  //     id: calendarToEdit.id,
+  //     title: title,
+  //     colorClass: selectedColor,
+  //   };
+  //   if (onEditCalendar) {
+  //     onEditCalendar(updatedCalendar);
+  //   }
+  // } else {
+  //   const newCalendar = {
+  //     id: uuidv4(),
+  //     title: title,
+  //     colorClass: selectedColor,
+  //   };
+  //   onAddCalendar(newCalendar);
+  // }
+  // setTitle('');
+  // setSelectedColor(colors[0]);
+  //};
 
   return (
     <form className='create-event-form' onSubmit={handleSubmit}>
@@ -98,9 +130,10 @@ const CreateCalendarForm: React.FC<CreateCalendarFromProps> = ({
           onChange={(color) => setSelectedColor(color)}
         />
       </div>
-      <Button className='w-full' type='submit'>
-        {calendarToEdit ? 'Update' : 'Save'}
+      <Button className='w-full' type='submit' disabled={loading}>
+        {loading ? 'Saving...' : calendarToEdit ? 'Update' : 'Save'}
       </Button>
+      {error && <p className='text-red-500'>{error}</p>}
     </form>
   );
 };

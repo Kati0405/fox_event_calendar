@@ -1,23 +1,29 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { format } from 'date-fns';
 
 import { calendars } from 'src/constants/constants';
 import { cn, filterAllDayEvents, getCalendarColor } from 'src/utils/utils';
-import { Context } from 'src/context/context';
 import Modal from 'src/components/ui/Modal';
 import EventInfo from 'src/components/features/EventInfo';
 import { Event } from 'src/types/types';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
 
 export interface AllDayEventProps {
   formattedDate: string;
 }
 
 const AllDayEvent: React.FC<AllDayEventProps> = ({ formattedDate }) => {
-  const { events } = useContext(Context)!;
-  const allDayEvents = filterAllDayEvents(events, formattedDate);
+  const { loading, data } = useCalendarContext();
   const [hoveredEventId, setHoveredEventId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const { events } = data;
+  const allDayEvents = filterAllDayEvents(events, formattedDate);
 
   const handleOpenModal = (event: Event) => {
     setSelectedEvent(event);
@@ -40,7 +46,7 @@ const AllDayEvent: React.FC<AllDayEventProps> = ({ formattedDate }) => {
     <div className='cursor-pointer'>
       {allDayEvents.map((event) => {
         const eventColor = getCalendarColor(calendars, event.calendarId);
-        const isHovered = hoveredEventId === event.id;
+        const isHovered = hoveredEventId === event._id;
         const backgroundClass = isHovered
           ? `bg-${eventColor} bg-opacity-100`
           : `bg-${eventColor} bg-opacity-50`;
@@ -52,9 +58,9 @@ const AllDayEvent: React.FC<AllDayEventProps> = ({ formattedDate }) => {
 
         return (
           <div
-            key={event.id}
+            key={event._id}
             className={`${combinedClassName}`}
-            onMouseEnter={() => setHoveredEventId(event.id)}
+            onMouseEnter={() => setHoveredEventId(event._id)}
             onMouseLeave={() => setHoveredEventId(null)}
             onClick={() => handleOpenModal(event)}
           >

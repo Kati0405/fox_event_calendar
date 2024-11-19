@@ -1,8 +1,6 @@
-import { useContext } from 'react';
-
 import { Calendar, Event, User, Day as DayType } from 'src/types/types';
 import Layout from 'src/components/layout/Layout';
-import { Context } from 'src/context/context';
+import { useCalendarContext } from 'src/hooks/useCalendarContext';
 
 export interface MainPageProps {
   user: User | null;
@@ -14,7 +12,12 @@ export interface MainPageProps {
 }
 
 const MainPage: React.FC<MainPageProps> = ({ user, setUser, week }) => {
-  const { currentDay, events, calendars } = useContext(Context)!;
+  const { loading, data } = useCalendarContext();
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const { currentDay, events, calendars } = data;
 
   return (
     <>
@@ -25,7 +28,7 @@ const MainPage: React.FC<MainPageProps> = ({ user, setUser, week }) => {
         currentDay={currentDay}
         events={events}
         calendars={calendars}
-      ></Layout>
+      />
     </>
   );
 };

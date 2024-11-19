@@ -1,25 +1,31 @@
+import { RepeatOptions } from "@/constants/constants";
+
 export type User = {
-    name: string;
+    _id: string,
+    firstName: string;
+    lastName: string;
     email: string;
-    avatar: string;
+    picture: string;
 }
 
 export type Event = {
-    id: string;
+    _id?: string,
     title: string;
-    date: Date;
-    start_time: Date;
-    end_time: Date;
+    date: string;
+    start_time: string;
+    end_time: string;
     description: string;
     calendarId: string;
-    isAllDay?: boolean
+    isAllDay?: boolean;
+    repeatOption?: RepeatOptions
 };
 
 export type Calendar = {
-    id: string;
+    _id: string;
     title: string;
     colorClass: string;
-    isDefault?: boolean
+    isDefault?: boolean;
+    userId: string
 }
 
 export type Day = {
