@@ -1,0 +1,40 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 0.625em;
+  color: #323749;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+.textarea {
+  width: 100%;
+  padding-top: 0.5rem;
+  font-size: 0.9375em;
+  font-family: var(--font-family-sans);
+  border: none;
+  border-bottom: 1px solid #323749;
+  background-color: white;
+  transition: border-color 0.2s;
+  resize: vertical;
+  resize: none;
+}
+
+.textarea:focus {
+  outline: none;
+}
+
+.error {
+  border-color: #ff4d4f;
+}
+
+.errorMessage {
+  color: #ff4d4f;
+  font-size: 0.75em;
+  margin-top: 0.25rem;
+}

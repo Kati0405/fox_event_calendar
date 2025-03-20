@@ -1,0 +1,31 @@
+.time-picker-input {
+  border: none;
+  border-bottom: 2px solid #000;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  width: 4.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.time-picker-input:focus {
+  outline: none;
+}
+
+.time-picker-label {
+  font-size: 0.625rem;
+  color: #323749;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.react-datepicker-time__header {
+  display: none;
+}
+
+.react-datepicker__time-list-item {
+  text-transform: lowercase;
+}
+
+.react-datepicker__time-list {
+  scrollbar-width: thin;
+}
